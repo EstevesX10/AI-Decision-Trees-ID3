@@ -4,7 +4,7 @@
 </div>
 
 <p align="center" width="100%">
-    <img src="./Decision Trees - ID3/Assets/XXX.png" width="60%" height="60%" />
+    <img src="./Decision Trees - ID3/Assets/Decision_Tree.png" width="55%" height="55%" />
 </p>
 
 ## Project Overview
