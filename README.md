@@ -1,6 +1,6 @@
 <div align="center">
 
-# AI | Decision Trees -> ID3
+# AI | Decision Trees [ID3 with Python]
 </div>
 
 <p align="center" width="100%">
