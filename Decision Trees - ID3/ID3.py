@@ -134,10 +134,6 @@ class DecisionTree:
 
         # Checks the Stopping Criteria
         if (depth >= self.max_depth or n_labels == 1 or n_samples < self.min_samples_split):
-            if (n_samples == 0):
-                print(y)
-                # return Node(value=self._most_common_label(y))
-            
             leaf_value = self._most_common_label(y)
             return Node(value=leaf_value)
         
