@@ -37,5 +37,5 @@ def visualize_tree(decision_tree, dataset, file_path=None):
     graph = graphviz.Digraph(format='png', node_attr={'color': 'lightblue2', 'style': 'filled'})
     plot_tree(dataset, decision_tree.root, None, graph, 0)
     if (file_path is not None):
-        graph.render('file_path')
+        graph.render(file_path)
     return graph
