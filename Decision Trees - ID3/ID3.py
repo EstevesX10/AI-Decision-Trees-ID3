@@ -175,7 +175,7 @@ class DecisionTree:
         # Predicts the Label given an Input
         return np.array([self._traverse_tree(x, self.root) for x in X])
     
-    def print_tree(self, node=None, indent=" "):
+    def print_tree(self, ds, node=None, indent=" "):
         if (self.root is None):
             raise Exception("[Unfit Model]")
         
@@ -185,17 +185,17 @@ class DecisionTree:
 
         # Found a Leaf / Pure Node
         if node.value is not None:
-            print(f"[{self.cols[-1]}]: {self.y_decoder[node.value]}")
+            print(f"[{ds.cols[-1]}]: {ds.y_decoder[node.value]}")
 
         # Shows the feature and threshold of the current node
         else:
-            print(f"'{self.cols[node.feature]}' ? [IG:{node.information_gain*100: 2.3f}%]")
+            print(f"'{ds.cols[node.feature]}' ? [IG:{node.information_gain*100: 2.3f}%]")
 
             # Recursive Call to the rest of the tree
             print("%sleft: " % (indent), end="")
-            self.print_tree(node.left, 2*indent)
+            self.print_tree(ds, node.left, 2*indent)
             print("%sright: " % (indent), end="")
-            self.print_tree(node.right, 2*indent)
+            self.print_tree(ds, node.right, 2*indent)
 
     def plot_tree(self, ds, node, parent_name, graph, counter, decision=None):
         # Base case: leaf node
