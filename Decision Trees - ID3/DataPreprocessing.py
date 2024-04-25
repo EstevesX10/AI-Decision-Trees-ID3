@@ -202,25 +202,3 @@ class Dataset:
         
         # Calculates and Returns the Accuracy of the Model
         return self._Calculate_Accuracy(y_Test, y_Predicted)
-    
-    def print_tree(self, dt, node=None, indent=" "):
-        if (dt.root is None):
-            raise Exception("[Unfit Model]")
-        
-        # Checks if the Node was given
-        if not node:
-            node = dt.root
-
-        # Found a Leaf / Pure Node
-        if node.value is not None:
-            print(f"[{self.cols[-1]}]: {self.y_decoder[node.value]}")
-
-        # Shows the feature and threshold of the current node
-        else:
-            print(f"'{self.cols[node.feature]}' ? [IG:{node.information_gain*100: 2.3f}%]")
-
-            # Recursive Call to the rest of the tree
-            print("%sleft: " % (indent), end="")
-            self.print_tree(dt, node.left, 2*indent)
-            print("%sright: " % (indent), end="")
-            self.print_tree(dt, node.right, 2*indent)
