@@ -83,7 +83,6 @@ class DecisionTree:
         # return (parent_entropy - sum_child_entropies) / len(unique_thresholds)
         return (parent_entropy - sum_child_entropies)
 
-    # TODO: implement gain ratio
     def _gain_ratio(self, y, Attribute_Column, Thresholds):
         info_gain = self._information_gain(y, Attribute_Column, Thresholds)
         n = len(y)
@@ -103,10 +102,9 @@ class DecisionTree:
         for feat_idx in feature_indices:
             attribute_column = X[:, feat_idx]
             thresholds = np.unique(attribute_column)
+            
             # info_gain = self._information_gain(y, attribute_column, thresholds)
             info_gain = self._gain_ratio(y, attribute_column, thresholds)
-
-            # print(f"{info_gain=} {best_information_gain=}")
             
             if (info_gain > best_information_gain):
                 best_information_gain = info_gain
@@ -117,17 +115,11 @@ class DecisionTree:
     def _grow_tree(self, X, y, feature_indices, threshold=None, depth=0):
         n_samples, n_features = X.shape
         n_labels = np.unique(y).size
-        unique_labels = np.unique(y)
 
         feature_idx, info_gain = self._best_split(X, y, feature_indices)
 
-        # if (depth == 2):
-        #     print(f"\n{depth=}  {n_labels=} {threshold=} {feature_idx=}\n")
-        #     print(f"\n{X=} {y=}\n")
-
         if (depth >= self.max_depth or n_labels == 1 or n_samples < self.min_samples_split or info_gain <= 0):
             most_common_label = self._most_common_label(y)
-            # print(f"CORRECT: {sum(y == most_common_label)} {most_common_label=} {y=} {len(y)=} ")
             return Node(threshold=threshold, value=most_common_label, correct_cases=sum(y == most_common_label), total_cases=len(y))
         
         feature_thresholds = np.unique(X[:, feature_idx])
