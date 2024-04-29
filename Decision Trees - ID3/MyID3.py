@@ -24,7 +24,7 @@ class Node:
         return self.value is not None
     
 class DecisionTree:
-    def __init__(self, min_samples_split=2, max_depth=20, n_features=None):
+    def __init__(self, min_samples_split=1, max_depth=20, n_features=None):
         # Amount of Samples needed to perform a split
         self.min_samples_split = min_samples_split
 
@@ -103,8 +103,8 @@ class DecisionTree:
             attribute_column = X[:, feat_idx]
             thresholds = np.unique(attribute_column)
             
-            # info_gain = self._information_gain(y, attribute_column, thresholds)
-            info_gain = self._gain_ratio(y, attribute_column, thresholds)
+            info_gain = self._information_gain(y, attribute_column, thresholds)
+            # info_gain = self._gain_ratio(y, attribute_column, thresholds)
             
             if (info_gain > best_information_gain):
                 best_information_gain = info_gain
