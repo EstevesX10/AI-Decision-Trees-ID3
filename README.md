@@ -39,4 +39,7 @@ You can even access it via `Jupyter Lab` with:
 
 Once the local server starts simply access it and navigate through your `Machine's Directories` until you find the folder where the **Notebook** is being held at.
 
+<div align="right">
+
 <sub>README.md by [Gonçalo Esteves](https://github.com/EstevesX10)</sub>
+</div>
