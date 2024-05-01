@@ -1,18 +1,14 @@
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import (train_test_split, KFold)
-from sklearn.preprocessing import (LabelEncoder, KBinsDiscretizer)
-from sklearn.metrics import (accuracy_score, balanced_accuracy_score)
-from ID3 import (DecisionTree)
+from sklearn.model_selection import (train_test_split)
+from sklearn.preprocessing import (LabelEncoder)
 
 class Dataset_Sklearn:
     def __init__(self, file_path) -> None:
         self.df, self.cols, self.target_encoder = self._process_dataframe(file_path)
-        # self.numerical_cols = self.df[self.cols[0:-1]]._get_numeric_data().columns
         self.numerical_cols = self.df[self.cols[0:-1]].select_dtypes(include=np.number).columns.tolist()
         
         self._perform_binning()
-        # self._perform_binning_V2()
         self.data, self.target = self._get_data_target()
     
     def _process_dataframe(self, file_path):
@@ -34,11 +30,6 @@ class Dataset_Sklearn:
         for numerical_column in self.numerical_cols:
             self.df[numerical_column] = pd.qcut(self.df[numerical_column], q=[0, .3, .7, 1])
             # self.df[numerical_column] = pd.qcut(self.df[numerical_column], q=[0, .25, .5, .75, 1])
-
-    def _perform_binning_V2(self):
-        for numerical_column in self.numerical_cols:
-            kbins = KBinsDiscretizer(n_bins=3, strategy='kmeans', encode='ordinal')
-            self.df[numerical_column] = kbins.fit_transform(self.df[numerical_column].to_numpy().reshape(-1, 1))
 
     def _get_data_target(self):
         X_Cols = self.cols[0:-1]
