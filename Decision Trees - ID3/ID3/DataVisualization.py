@@ -29,9 +29,7 @@ def calc_learning_curve_points(Model, X, y, n_itr=50, min_train_samples=1):
     for test_size in test_sizes:
         accuracies = []
         for _ in range(n_itr):
-            X_train, X_test, y_train, y_test = train_test_split(
-                X, y, test_size=test_size, random_state=13
-            )
+            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=13)
             model = Model()
             model.fit(X_train, y_train)
             y_pred = model.predict(X_test)
