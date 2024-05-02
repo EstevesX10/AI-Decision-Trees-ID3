@@ -71,7 +71,7 @@ class Dataset:
         y = self.target if y is None else y
 
         # Splitting the Data
-        (X_train, X_test, y_train, y_test) = train_test_split(X, y, test_size=test_size, random_state=14, shuffle=True, stratify=y)
+        (X_train, X_test, y_train, y_test) = train_test_split(X, y, test_size=test_size, random_state=13, shuffle=True, stratify=y)
 
         # Updating the Test and Train Dataframes
         self._process_train_test_split(X_train, X_test, y_train, y_test)
