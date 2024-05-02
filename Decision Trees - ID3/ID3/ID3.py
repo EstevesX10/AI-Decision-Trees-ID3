@@ -115,7 +115,7 @@ class DecisionTree:
     def _grow_tree(self, X, y, feature_indices, threshold=None, depth=0):
         n_samples, n_features = X.shape
         n_labels = np.unique(y).size
-
+        
         feature_idx, info_gain = self._best_split(X, y, feature_indices)
 
         if (depth >= self.max_depth or n_labels == 1 or n_samples < self.min_samples_split or info_gain <= 0):
@@ -154,13 +154,15 @@ class DecisionTree:
         feature_value = X[node.feature]
 
         for child in node.children:
-            if (feature_value == child.threshold):
-                return self._traverse_tree(X, child)
+                if (type(child.threshold) == pd._libs.interval.Interval and (feature_value in child.threshold or feature_value == child.threshold)):
+                    return self._traverse_tree(X, child)
+                elif (type(child.threshold) == str and feature_value == child.threshold):
+                    return self._traverse_tree(X, child)
 
     def predict(self, X):
         # Predicts the Label given an Input
         return np.array([self._traverse_tree(x, self.root) for x in X])
-    
+
     def score(self, y_pred, y_true):
         # Simple Accuracy
         return sum(y_pred == y_true) / len(y_true)
