@@ -4,3 +4,4 @@ seaborn
 pandas 
 scikit-learn
 graphviz
+pygame==2.5.2

@@ -14,3 +14,4 @@ dependencies:
     - jupyter
     - pandas
     - scikit-learn
+    - pygame==2.5.2
