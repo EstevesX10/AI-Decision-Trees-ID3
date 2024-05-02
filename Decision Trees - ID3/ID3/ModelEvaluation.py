@@ -16,13 +16,13 @@ class Metrics:
         return balanced_accuracy_score(self.y_true, self.y_pred)
 
     def precision(self):
-        return precision_score(self.y_true, self.y_pred)
+        return precision_score(self.y_true, self.y_pred, average="weighted")
 
     def recall(self): # Also known as Sensitivity
-        return recall_score(self.y_true, self.y_pred)
+        return recall_score(self.y_true, self.y_pred, average="weighted")
 
     def f1_score(self):
-        return f1_score(self.y_true, self.y_pred)
+        return f1_score(self.y_true, self.y_pred, average="weighted")
 
     def calculate_metrics(self):
         cols = ['Accuracy', 'Balanced Accuracy', 'Precision', 'Recall', 'F1 Score']
