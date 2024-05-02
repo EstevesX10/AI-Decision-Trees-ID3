@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from collections import (Counter)
-from DataPreprocessing import (Dataset_Sklearn)
+from .DataPreprocessing import (Dataset)
 import graphviz
 
 class Node:
@@ -165,7 +165,7 @@ class DecisionTree:
         # Simple Accuracy
         return sum(y_pred == y_true) / len(y_true)
 
-    def print_tree(self, ds:Dataset_Sklearn, node=None, indent=" "):
+    def print_tree(self, ds:Dataset, node=None, indent=" "):
         if node is None:
             node = self.root
             if node is None:
@@ -187,7 +187,7 @@ class DecisionTree:
                 # Recursive call to print each subtree
                 self.print_tree(ds, child, indent + "  ")
 
-    def plot_tree(self, ds:Dataset_Sklearn, node, parent_name, graph, counter, decision=None):
+    def plot_tree(self, ds:Dataset, node, parent_name, graph, counter, decision=None):
         # Base case: leaf node
         if node.is_leaf():
             leaf_name = f'leaf_{counter}'
@@ -219,6 +219,3 @@ class DecisionTree:
         if (file_path is not None):
             graph.render(file_path)
         return graph
-    
-if __name__ == "__main__":
-    pass

@@ -3,6 +3,9 @@ import pandas as pd
 import graphviz
 from collections import (Counter)
 
+# Alternative Implementation of the ID3 Algorithm using binary splits.
+# Note: This Implementation requires a proper data handling so that each feature can only contain 2 Unique Values
+
 class Node:
     def __init__(self, feature=None, threshold=None, information_gain=None, left=None, right=None, *, value=None):
         # Feature and Threshold this node was divided with

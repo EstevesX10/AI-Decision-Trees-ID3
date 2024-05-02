@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.model_selection import (train_test_split)
 from sklearn.preprocessing import (LabelEncoder)
 
-class Dataset_Sklearn:
+class Dataset:
     def __init__(self, file_path) -> None:
         self.df, self.cols, self.target_encoder = self._process_dataframe(file_path)
         self.numerical_cols = self.df[self.cols[0:-1]].select_dtypes(include=np.number).columns.tolist()
