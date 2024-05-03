@@ -37,6 +37,9 @@ class DecisionTree:
         # Defining a root - will later help to traverse the tree
         self.root = None
 
+        # List to store the initial unique values of all the Features
+        self.feature_thresholds = None
+
     def _most_common_label(self, y):
         # Creating a Counter
         counter = Counter(y)
@@ -80,7 +83,6 @@ class DecisionTree:
         for partition_size, child_entropy in children_entropies:
             sum_child_entropies += ((partition_size / n) * child_entropy)
 
-        # return (parent_entropy - sum_child_entropies) / len(unique_thresholds)
         return (parent_entropy - sum_child_entropies)
 
     def _gain_ratio(self, y, Attribute_Column, Thresholds):
@@ -122,17 +124,22 @@ class DecisionTree:
             most_common_label = self._most_common_label(y)
             return Node(threshold=threshold, value=most_common_label, correct_cases=sum(y == most_common_label), total_cases=len(y))
         
-        feature_thresholds = np.unique(X[:, feature_idx])
+        # feature_thresholds = np.unique(X[:, feature_idx])
+        feature_thresholds = self.feature_thresholds[feature_idx]
         
         children = []
         for value in feature_thresholds:
             subset_indices = np.where(X[:, feature_idx] == value)[0]
-
+            
             subset_X = X[subset_indices, :]
             subset_y = y[subset_indices]
 
-            subtree = self._grow_tree(subset_X, subset_y, np.delete(feature_indices, np.where(feature_indices == feature_idx)), value, depth + 1)
-            children.append(subtree)
+            if (len(subset_indices) > 0):
+                subtree = self._grow_tree(subset_X, subset_y, np.delete(feature_indices, np.where(feature_indices == feature_idx)), value, depth + 1)
+                children.append(subtree)
+            else:
+                node = Node(threshold=value, value=self._most_common_label(y), correct_cases=0, total_cases=0)
+                children.append(node)
 
         return Node(feature_idx, info_gain, threshold, children, total_cases=len(y))
 
@@ -142,7 +149,10 @@ class DecisionTree:
             self.n_features = X.shape[1]
         else:
             self.n_features = min(X.shape[1], self.n_features)
-    
+
+        # Getting the Unique Values of the Features
+        self.feature_thresholds = [np.unique(X[:, idx]) for idx in range(self.n_features)]
+        
         # Creating a Tree Recursively
         self.root = self._grow_tree(X, y, np.arange(self.n_features))
     
@@ -156,7 +166,7 @@ class DecisionTree:
         for child in node.children:
             if (type(child.threshold) == pd._libs.interval.Interval and (feature_value in child.threshold or feature_value == child.threshold)):
                 return self._traverse_tree(X, child)
-            if (str(feature_value) == str(child.threshold)):
+            elif (str(feature_value) == str(child.threshold)):
                 return self._traverse_tree(X, child)
 
     def predict(self, X):
