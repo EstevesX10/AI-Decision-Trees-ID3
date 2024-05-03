@@ -152,12 +152,12 @@ class DecisionTree:
             return node.value
 
         feature_value = X[node.feature]
-
+        
         for child in node.children:
-                if (type(child.threshold) == pd._libs.interval.Interval and (feature_value in child.threshold or feature_value == child.threshold)):
-                    return self._traverse_tree(X, child)
-                elif (type(child.threshold) == str and feature_value == child.threshold):
-                    return self._traverse_tree(X, child)
+            if (type(child.threshold) == pd._libs.interval.Interval and (feature_value in child.threshold or feature_value == child.threshold)):
+                return self._traverse_tree(X, child)
+            if (str(feature_value) == str(child.threshold)):
+                return self._traverse_tree(X, child)
 
     def predict(self, X):
         # Predicts the Label given an Input
@@ -172,8 +172,6 @@ class DecisionTree:
             node = self.root
             if node is None:
                 raise Exception("[Unfit Model]")
-
-        assert(isinstance(self.root, Node))
 
         # Check if we have a leaf node
         if node.is_leaf():
