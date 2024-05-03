@@ -20,11 +20,11 @@ def Display_dfs_side_by_side(dfs:list, captions:list):
         output += "\xa0\xa0\xa0"
     display(HTML(output))
 
-def calc_learning_curve_points(Model, X, y, n_itr=50, min_train_samples=1):
+def calc_learning_curve_points(Model, X, y, n_itr=20, min_train_samples=1, n_points=10):
     points = []
     n_samples = len(X)
     max_test_size = (n_samples - min_train_samples) / n_samples
-    test_sizes = np.linspace(min_train_samples / n_samples, max_test_size, 25)
+    test_sizes = np.linspace(min_train_samples / n_samples, max_test_size, n_points)
     
     for test_size in test_sizes:
         accuracies = []
