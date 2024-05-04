@@ -1,0 +1,18 @@
+digraph {
+	node [color=lightblue2 style=filled]
+	internal_0 [label="Pat [8]"]
+	internal_1 [label="Est [4]"]
+	internal_0 -> internal_1 [label=Full]
+	leaf_2 [label="No [0/0]" shape=box]
+	internal_1 -> leaf_2 [label="0-10"]
+	leaf_3 [label="No [1/1]" shape=box]
+	internal_1 -> leaf_3 [label="10-30"]
+	leaf_4 [label="Yes [1/1]" shape=box]
+	internal_1 -> leaf_4 [label="30-60"]
+	leaf_5 [label="No [2/2]" shape=box]
+	internal_1 -> leaf_5 [label=">60"]
+	leaf_6 [label="No [1/1]" shape=box]
+	internal_0 -> leaf_6 [label=None]
+	leaf_7 [label="Yes [3/3]" shape=box]
+	internal_0 -> leaf_7 [label=Some]
+}
