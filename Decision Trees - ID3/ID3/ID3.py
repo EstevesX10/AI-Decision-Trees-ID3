@@ -18,10 +18,18 @@ class Node:
         self.value = value
         self.correct_cases = correct_cases
         self.total_cases = total_cases
+        self.class_proba = None
 
     def is_leaf(self):
         # If a Node does not have a Value then it is not a Leaf
         return self.value is not None
+
+    def calculate_class_proba(self, y_partition, target_values):
+        # Calculates the probability of each target value being in the current y partition
+        if (self.total_cases > 0):
+            self.class_proba = [(sum(y_partition == target_value) / self.total_cases) for target_value in target_values]
+        else:
+            self.class_proba = [0 for _ in range(len(target_values))]
     
 class DecisionTree:
     def __init__(self, min_samples_split=1, max_depth=20, n_features=None):
@@ -39,6 +47,9 @@ class DecisionTree:
 
         # List to store the initial unique values of all the Features
         self.feature_thresholds = None
+
+        # Variable to store the Unique Values of the Target classes
+        self.target_values = None
 
     def _most_common_label(self, y):
         # Creating a Counter
@@ -62,6 +73,7 @@ class DecisionTree:
         return - sum(p * np.log2(p) for p in ps if p > 0)
 
     def _split(self, Attribute_Column, Thresholds):
+        # Splits the data based on a column's thresholds
         entries_indices = [np.argwhere(Attribute_Column == value).flatten() for value in Thresholds]
         return entries_indices
 
@@ -86,6 +98,7 @@ class DecisionTree:
         return (parent_entropy - sum_child_entropies)
 
     def _gain_ratio(self, y, Attribute_Column, Thresholds):
+        # Calculates the Gain Ratio
         info_gain = self._information_gain(y, Attribute_Column, Thresholds)
         n = len(y)
         intrinsic_information = 0
@@ -97,16 +110,21 @@ class DecisionTree:
         
         return info_gain / (-intrinsic_information)
         
-    def _best_split(self, X, y, feature_indices):
+    def _best_split(self, X, y, feature_indices, method='information_gain'):
+        # Finds the Best Split within the given data partition
         best_information_gain = -1
         best_feature_idx = None
 
         for feat_idx in feature_indices:
             attribute_column = X[:, feat_idx]
             thresholds = np.unique(attribute_column)
-            
-            info_gain = self._information_gain(y, attribute_column, thresholds)
-            # info_gain = self._gain_ratio(y, attribute_column, thresholds)
+
+            if (method == 'information_gain'):
+                info_gain = self._information_gain(y, attribute_column, thresholds)
+            elif (method == 'gain_ratio'):
+                info_gain = self._gain_ratio(y, attribute_column, thresholds)
+            else:
+                raise ValueError('Invalid method selected!!!')
             
             if (info_gain > best_information_gain):
                 best_information_gain = info_gain
@@ -114,19 +132,23 @@ class DecisionTree:
 
         return best_feature_idx, best_information_gain
 
-    def _grow_tree(self, X, y, feature_indices, threshold=None, depth=0):
+    def _grow_tree(self, X, y, feature_indices, threshold=None, depth=0, method='information_gain'):
         n_samples, n_features = X.shape
         n_labels = np.unique(y).size
         
-        feature_idx, info_gain = self._best_split(X, y, feature_indices)
+        feature_idx, info_gain = self._best_split(X, y, feature_indices, method=method)
 
+        # Base Case
         if (depth >= self.max_depth or n_labels == 1 or n_samples < self.min_samples_split or info_gain <= 0):
             most_common_label = self._most_common_label(y)
-            return Node(threshold=threshold, value=most_common_label, correct_cases=sum(y == most_common_label), total_cases=len(y))
+            new_node = Node(threshold=threshold, value=most_common_label, correct_cases=sum(y == most_common_label), total_cases=len(y))
+            new_node.calculate_class_proba(y, self.target_values)
+            return new_node
         
         # feature_thresholds = np.unique(X[:, feature_idx])
         feature_thresholds = self.feature_thresholds[feature_idx]
-        
+
+        # Creating the following children partitions
         children = []
         for value in feature_thresholds:
             subset_indices = np.where(X[:, feature_idx] == value)[0]
@@ -135,15 +157,16 @@ class DecisionTree:
             subset_y = y[subset_indices]
 
             if (len(subset_indices) > 0):
-                subtree = self._grow_tree(subset_X, subset_y, np.delete(feature_indices, np.where(feature_indices == feature_idx)), value, depth + 1)
+                subtree = self._grow_tree(subset_X, subset_y, np.delete(feature_indices, np.where(feature_indices == feature_idx)), value, depth + 1, method)
                 children.append(subtree)
             else:
                 node = Node(threshold=value, value=self._most_common_label(y), correct_cases=0, total_cases=0)
+                node.calculate_class_proba(y, self.target_values)
                 children.append(node)
 
         return Node(feature_idx, info_gain, threshold, children, total_cases=len(y))
 
-    def fit(self, X, y):
+    def fit(self, X, y, method='information_gain'):
         # Making sure that the amount of features does not surpass the ones available
         if not self.n_features:
             self.n_features = X.shape[1]
@@ -152,9 +175,12 @@ class DecisionTree:
 
         # Getting the Unique Values of the Features
         self.feature_thresholds = [np.unique(X[:, idx]) for idx in range(self.n_features)]
+
+        # Storing the Target Values
+        self.target_values = np.unique(y)
         
         # Creating a Tree Recursively
-        self.root = self._grow_tree(X, y, np.arange(self.n_features))
+        self.root = self._grow_tree(X, y, np.arange(self.n_features), method)
     
     def _traverse_tree(self, X, node:Node):
         # Traverses the Tree until we reached a leaf node -> which will determine the classification label
@@ -173,6 +199,23 @@ class DecisionTree:
         # Predicts the Label given an Input
         return np.array([self._traverse_tree(x, self.root) for x in X])
 
+    def _traverse_tree_proba(self, X, node:Node):
+        # Traverses the Tree until we reached a leaf node -> which will determine the classification label
+        if (node.is_leaf()):
+            return node.class_proba
+
+        feature_value = X[node.feature]
+        
+        for child in node.children:
+            if (type(child.threshold) == pd._libs.interval.Interval and (feature_value in child.threshold or feature_value == child.threshold)):
+                return self._traverse_tree_proba(X, child)
+            elif (str(feature_value) == str(child.threshold)):
+                return self._traverse_tree_proba(X, child)
+    
+    def predict_proba(self, X_Test):
+        # Predicts the probability of belonging to each target class
+        return np.array([self._traverse_tree_proba(x, self.root) for x in X_Test])
+    
     def score(self, y_pred, y_true):
         # Simple Accuracy
         return sum(y_pred == y_true) / len(y_true)
@@ -227,5 +270,9 @@ class DecisionTree:
         graph = graphviz.Digraph(format='png', node_attr={'color': 'lightblue2', 'style': 'filled'})
         self.plot_tree(dataset, self.root, None, graph, 0)
         if (file_path is not None):
-            graph.render(file_path)
+            # Saves the graph into a .dot file
+            graph.save(file_path + '.dot')
+            
+            # Saves the graph as previously discriminates - as a png
+            graph.render(file_path, cleanup=True)
         return graph
