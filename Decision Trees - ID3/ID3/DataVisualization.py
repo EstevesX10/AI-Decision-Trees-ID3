@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import seaborn as sns
 from sklearn.preprocessing import (label_binarize)
-from sklearn.model_selection import (train_test_split)
 from sklearn.metrics import (confusion_matrix, roc_curve, roc_auc_score, auc)
 
 def Display_dfs_side_by_side(dfs:list, captions:list):
@@ -20,27 +19,6 @@ def Display_dfs_side_by_side(dfs:list, captions:list):
         output += df.style.set_table_attributes("style='display:inline'").set_caption(caption)._repr_html_()
         output += "\xa0\xa0\xa0"
     display(HTML(output))
-
-def calc_learning_curve_points(Model, X, y, n_itr=20, min_train_samples=1, n_points=10):
-    points = []
-    n_samples = len(X)
-    max_test_size = (n_samples - min_train_samples) / n_samples
-    test_sizes = np.linspace(min_train_samples / n_samples, max_test_size, n_points)
-    
-    for test_size in test_sizes:
-        accuracies = []
-        for _ in range(n_itr):
-            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=13)
-            model = Model()
-            model.fit(X_train, y_train)
-            y_pred = model.predict(X_test)
-            accuracies.append(sum(y_test ==  y_pred) / len(y_test))
-        
-        average_accuracy = np.mean(accuracies)
-        train_set_size = n_samples - int(n_samples * test_size)
-        points.append((train_set_size/n_samples*100, average_accuracy))
-    
-    return points
 
 def Plot_Model_Stats(FitModel, Points, X_Test, Y_Test, Title="Model Performance Evaluation"):
 
