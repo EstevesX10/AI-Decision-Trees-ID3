@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import json
 from sklearn.model_selection import (train_test_split)
 from sklearn.preprocessing import (LabelEncoder)
 
@@ -77,3 +78,37 @@ class Dataset:
         self._process_train_test_split(X_train, X_test, y_train, y_test)
         
         return (X_train, X_test, y_train, y_test)
+
+# Other Functions used to manage data
+
+def calc_learning_curve_points(Model, X, y, n_itr=20, min_train_samples=1, n_points=10):
+    # Calculates a list of points to plot the learning curve
+    points = []
+    n_samples = len(X)
+    max_test_size = (n_samples - min_train_samples) / n_samples
+    test_sizes = np.linspace(min_train_samples / n_samples, max_test_size, n_points)
+    
+    for test_size in test_sizes:
+        accuracies = []
+        for _ in range(n_itr):
+            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=13)
+            model = Model()
+            model.fit(X_train, y_train)
+            y_pred = model.predict(X_test)
+            accuracies.append(sum(y_test ==  y_pred) / len(y_test))
+        
+        average_accuracy = np.mean(accuracies)
+        train_set_size = n_samples - int(n_samples * test_size)
+        points.append((train_set_size/n_samples*100, average_accuracy))
+    
+    return points
+
+def Save_json_file(content: dict, file_path:str):
+    # Saves a Dictionary as a json file
+    with open(file_path, "w") as f:
+        json.dump(content , f)
+        
+def Load_json_file(file_path:str):
+    # Loads a json file - creates a dictionary
+    with open(file_path) as f:
+        return json.load(f)
