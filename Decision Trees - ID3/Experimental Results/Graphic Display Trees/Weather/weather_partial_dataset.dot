@@ -1,0 +1,14 @@
+digraph {
+	node [color=lightblue2 style=filled]
+	internal_0 [label="Weather [9]"]
+	leaf_1 [label="yes [4/4]" shape=box]
+	internal_0 -> leaf_1 [label=overcast]
+	internal_2 [label="Windy [3]"]
+	internal_0 -> internal_2 [label=rainy]
+	leaf_3 [label="yes [2/2]" shape=box]
+	internal_2 -> leaf_3 [label=False]
+	leaf_4 [label="no [1/1]" shape=box]
+	internal_2 -> leaf_4 [label=True]
+	leaf_5 [label="no [2/2]" shape=box]
+	internal_0 -> leaf_5 [label=sunny]
+}
