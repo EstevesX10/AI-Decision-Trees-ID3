@@ -12,9 +12,9 @@ def get_base_dir():
         return os.path.dirname(os.path.abspath(__file__))
 
 # Use the base path to define a function that gives asset paths
-def get_asset_path(asset_filename):
+def get_asset_path(folder, asset_filename):
     base_dir = get_base_dir()
-    return os.path.join(base_dir, asset_filename)
+    return os.path.join(base_dir, folder, asset_filename)
 
 from .ConnectFourState import (Connect_Four_State)
 from .TerminalInterface import (Connect_Four_Terminal_APP)
