@@ -1,5 +1,6 @@
 import pygame
 import random as rd
+from . import (get_asset_path)
 from .Constants import (NROWS, NCOLS,
                        SQSIZE, X_OFFSET, Y_OFFSET, BORDER_THICKNESS, WIDTH, HEIGHT,
                        CIRCLE_OFFSET, CIRCLE_POS, CIRCLE_RADIUS,
@@ -171,7 +172,8 @@ class Connect_Four_GUI_APP:
         self.current_node = TreeNode(state=Connect_Four_State())
 
         # Creating Buttons
-        BACK_IMG = pygame.image.load('./Assets/Back.png').convert_alpha()
+        BACK_PATH = get_asset_path('Assets/Back.png')
+        BACK_IMG = pygame.image.load(BACK_PATH).convert_alpha()
         Back_Btn = Button(BACK_IMG, 20, 20, 0.1)
         
         # Create a Flag to keep track of current state of the Application / GUI
@@ -235,25 +237,31 @@ class Connect_Four_GUI_APP:
         pygame.init()
         screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("Connect-4")
-        ICON_IMG = pygame.image.load('./Assets/Connect-Four.png').convert_alpha()
+        ICON_PATH = get_asset_path('Assets/Connect-Four.png')
+        ICON_IMG = pygame.image.load(ICON_PATH).convert_alpha()
         pygame.display.set_icon(ICON_IMG)
 
         # Creating Main Menu Background Image
-        BACKGROUND_IMG = pygame.image.load('./Assets/Connect-Four_MainMenu.png').convert_alpha()
+        BACKGROUND_PATH = get_asset_path('Assets/Connect-Four_MainMenu.png')
+        BACKGROUND_IMG = pygame.image.load(BACKGROUND_PATH).convert_alpha()
         Main_Menu_Image = Image(BACKGROUND_IMG, -25, -25, 0.7)
         
         # Creating the Game Mode Sub Menu Background
-        MODES_IMG = pygame.image.load('./Assets/Connect-Four_GameModes.png').convert_alpha()
+        MODES_PATH = get_asset_path('Assets/Connect-Four_GameModes.png')
+        MODES_IMG = pygame.image.load(MODES_PATH).convert_alpha()
         Modes_Image = Image(MODES_IMG, -25, -25, 0.7)
 
         # Creating Buttons
-        BACK_IMG = pygame.image.load('./Assets/Back.png').convert_alpha()
+        BACK_PATH = get_asset_path('Assets/Back.png')
+        BACK_IMG = pygame.image.load(BACK_PATH).convert_alpha()
         Back_Btn = Button(BACK_IMG, 20, 20, 0.1)
         
-        START_IMG = pygame.image.load('./Assets/Start.png').convert_alpha()
+        START_PATH = get_asset_path('Assets/Start.png')
+        START_IMG = pygame.image.load(START_PATH).convert_alpha()
         Start_Btn = Button(START_IMG, 260, 100, 0.3)
         
-        RANDOM_IMG = pygame.image.load('./Assets/Random.png').convert_alpha()
+        RANDOM_PATH = get_asset_path('Assets/Random.png')
+        RANDOM_IMG = pygame.image.load(RANDOM_PATH).convert_alpha()
         Random_Btn = Button(RANDOM_IMG, 40, 170, 0.2)
         
         # Create a Flag to keep track of current state of the Application / GUI
