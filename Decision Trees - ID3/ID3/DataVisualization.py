@@ -20,7 +20,7 @@ def Display_dfs_side_by_side(dfs:list, captions:list):
         output += "\xa0\xa0\xa0"
     display(HTML(output))
 
-def Plot_Model_Stats(FitModel, Points, X_Test, Y_Test, Title="Model Performance Evaluation"):
+def Plot_Model_Stats(FitModel, Points, dataset, X_Test, Y_Test, Title="Model Performance Evaluation"):
 
     '''
     Plots the Confusion Matrix as Well as the Learning Curve
@@ -30,11 +30,11 @@ def Plot_Model_Stats(FitModel, Points, X_Test, Y_Test, Title="Model Performance 
     Y_Test := Array with the Label's Test set
     '''
 
-    # Calculating the type of Classification Problem (Binary or MultiClass)
-    n_labels = len(FitModel.target_values)
-    
     # Getting the Target Labels
-    labels = FitModel.target_values
+    labels = np.unique(dataset.target)
+
+    # Calculating the type of Classification Problem (Binary or MultiClass)
+    n_labels = len(labels)
 
     # Create a larger figure to accommodate the plots
     fig, axs = plt.subplots(nrows=1, ncols=3, figsize=(12, 4))
@@ -49,8 +49,8 @@ def Plot_Model_Stats(FitModel, Points, X_Test, Y_Test, Title="Model Performance 
     axs[0].set_title('Confusion Matrix')
     axs[0].set_xlabel('Predicted Labels')
     axs[0].set_ylabel('True Labels')
-    axs[0].xaxis.set_ticklabels(np.unique(Y_Test))
-    axs[0].yaxis.set_ticklabels(np.unique(Y_Test))
+    axs[0].set_xticklabels(dataset.target_encoder.inverse_transform(np.unique(Y_Test)), fontsize=8)
+    axs[0].set_yticklabels(dataset.target_encoder.inverse_transform(np.unique(Y_Test)), fontsize=8)
 
     # Binary Classification Problem
     if (n_labels == 2):
@@ -90,7 +90,7 @@ def Plot_Model_Stats(FitModel, Points, X_Test, Y_Test, Title="Model Performance 
         colors = ['#0059b3', '#990000', '#009926']
         for i in range(n_classes):
             axs[1].plot(fpr[i], tpr[i], color=colors[i], lw=1.2, linestyle='--',
-                        label=f"AUC of class {labels[i]} = {roc_auc[i]:0.2f})")
+                        label=f"AUC of class {dataset.target_encoder.inverse_transform([labels[i]])[0]} = {roc_auc[i]:0.2f})")
 
         axs[1].plot([0, 1], [0, 1], 'darkblue', linestyle='--', lw=1.4, label=f"Chance Level (AUC = 0.5)")
         axs[1].set_xlabel('False Positive Rate')
