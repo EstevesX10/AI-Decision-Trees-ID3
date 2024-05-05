@@ -1,5 +1,6 @@
-import pygame
+import numpy as np
 import random as rd
+import pygame
 from . import (get_asset_path)
 from .Constants import (NROWS, NCOLS,
                        SQSIZE, X_OFFSET, Y_OFFSET, BORDER_THICKNESS, WIDTH, HEIGHT,
@@ -125,6 +126,13 @@ class Connect_Four_GUI_APP:
         for (n_col, new_state) in self.current_node.state.generate_new_states():
             sample = new_state.convert_board_into_sample()
             y_pred = self.dt.predict(sample)
+
+            # The array needs mapping since the encoder converted the target values as : 0 - Draw, 1 - Loss, 2 - Win
+            pred_mapping = {0:1, 1:0, 2:2}
+            vectorized_mapping = np.vectorize(pred_mapping.get)
+            y_pred = vectorized_mapping(y_pred)
+
+            print(y_pred)
             if (y_pred > best_eval):
                 best_col = n_col
                 best_eval = y_pred
@@ -283,6 +291,10 @@ class Connect_Four_GUI_APP:
         RANDOM_IMG = pygame.image.load(RANDOM_PATH).convert_alpha()
         Random_Btn = Button(RANDOM_IMG, 40, 170, 0.2)
         
+        DT_PATH = get_asset_path('Assets/DecisionTree.png')
+        DT_IMG = pygame.image.load(DT_PATH).convert_alpha()
+        DT_Btn = Button(DT_IMG, 535, 170, 0.18)
+        
         # Create a Flag to keep track of current state of the Application / GUI
         run = True
 
@@ -303,20 +315,18 @@ class Connect_Four_GUI_APP:
                 if (Random_Btn.Action(screen)):
                     self.menu = "Random"
 
-                self.write(font='Arial', text=" A* Search ", size=25, color=LIGHT_BLUE, bg_color=WHITE, bold=True, pos=(33, 480), screen=screen)
-
-                self.write(font='Arial', text=" MiniMax ", size=25, color=LIGHT_BLUE, bg_color=WHITE, bold=True, pos=(545, 300), screen=screen)
-
-                self.write(font='Arial', text=" MCTS ", size=25, color=LIGHT_BLUE, bg_color=WHITE, bold=True, pos=(558, 485), screen=screen)
-            
-            if (self.menu == "Random2"):
+                self.write(font='Arial', text=" ID3 ", size=25, color=LIGHT_BLUE, bg_color=WHITE, bold=True, pos=(560, 280), screen=screen)
+                if (DT_Btn.Action(screen)):
+                    self.menu = "ID3"
+                            
+            if (self.menu == "Random"):
                 if (self.run_game(screen=screen, player1=self.player, player2=self.random, heuristic_1=None, heuristic_2=None)):
                     self.menu = "Modes"
                 else:
                     run = False
             
             # ID3 Algorithm
-            if (self.menu == "Random"):
+            if (self.menu == "ID3"):
                 if (self.run_game(screen=screen, player1=self.player, player2=self.id3, heuristic_1=None, heuristic_2=None)):
                     self.menu = "Modes"
                 else:
