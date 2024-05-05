@@ -1,11 +1,11 @@
 import pygame
 import random as rd
-from Constants import (NROWS, NCOLS,
+from .Constants import (NROWS, NCOLS,
                        SQSIZE, X_OFFSET, Y_OFFSET, BORDER_THICKNESS, WIDTH, HEIGHT,
                        CIRCLE_OFFSET, CIRCLE_POS, CIRCLE_RADIUS,
                        BLACK, WHITE, LIGHT_BLUE, BLUE, DARK_BLUE, RED, DARK_RED, GREEN, DARK_GREEN, PIECES_COLORS)
-from ConnectFourState import (Connect_Four_State)
-from TreeNode import (TreeNode)
+from .ConnectFourState import (Connect_Four_State)
+from .TreeNode import (TreeNode)
 
 # NOTE:
 # -> Both Image and Button Classes are almost the same. They only differ upon the button's functionality since a Image is only used to display a sprite while the button 

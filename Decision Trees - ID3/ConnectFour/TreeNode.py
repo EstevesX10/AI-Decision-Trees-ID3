@@ -1,5 +1,5 @@
 import numpy as np
-from ConnectFourState import (Connect_Four_State)
+from .ConnectFourState import (Connect_Four_State)
 
 class TreeNode:
     def __init__(self, state, parent=None):

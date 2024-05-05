@@ -1,7 +1,7 @@
 import random as rd
 from IPython.display import (clear_output)
-from ConnectFourState import (Connect_Four_State)
-from TreeNode import (TreeNode)
+from .ConnectFourState import (Connect_Four_State)
+from .TreeNode import (TreeNode)
 
 class Connect_Four_Terminal_APP:
     def __init__(self):

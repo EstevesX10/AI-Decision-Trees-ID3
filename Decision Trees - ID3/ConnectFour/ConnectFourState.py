@@ -1,6 +1,6 @@
 import numpy as np
 from copy import (deepcopy)
-from Constants import (NROWS, NCOLS)
+from .Constants import (NROWS, NCOLS)
 
 class Connect_Four_State:
     def __init__(self):
