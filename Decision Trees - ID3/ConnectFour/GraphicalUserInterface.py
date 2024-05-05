@@ -8,6 +8,8 @@ from .Constants import (NROWS, NCOLS,
                        BLACK, WHITE, LIGHT_BLUE, BLUE, DARK_BLUE, RED, DARK_RED, GREEN, DARK_GREEN, PIECES_COLORS)
 from .ConnectFourState import (Connect_Four_State)
 from .TreeNode import (TreeNode)
+from .Heuristics import (heuristic_suggested)
+from .Algorithms import (A_Star_Search, MiniMax, MCTS)
 
 # NOTE:
 # -> Both Image and Button Classes are almost the same. They only differ upon the button's functionality since a Image is only used to display a sprite while the button 
@@ -119,6 +121,28 @@ class Connect_Four_GUI_APP:
     
         return new_node
 
+    def A_Star_action(self, heuristic):
+        # Getting the Final Node after using the A* Search
+        final_node = A_Star_Search(self.current_node, heuristic)
+        
+        # return next node
+        return final_node
+    
+    def A_Star(self, heuristic=heuristic_suggested):
+        # Generate the Next_Node
+        new_node = self.A_Star_action(heuristic)
+    
+        # Returns the next node
+        return new_node
+
+    def minimax(self, heuristic, depth_search=5):
+        # Executing a MiniMax move with both heuristics and depth search given
+        return MiniMax(self.current_node, heuristic, depth_search)
+
+    def mcts(self, heuristic):
+        # Executing the Monte Carlo Tree Search Algorithm
+        return MCTS(self.current_node, heuristic)
+
     def id3(self):
         best_col = -1
         best_eval = -10000000000000000
@@ -222,7 +246,7 @@ class Connect_Four_GUI_APP:
         self.current_node = TreeNode(state=Connect_Four_State())
 
         # Creating Buttons
-        BACK_PATH = get_asset_path('Assets/Back.png')
+        BACK_PATH = get_asset_path('Assets', 'Back.png')
         BACK_IMG = pygame.image.load(BACK_PATH).convert_alpha()
         Back_Btn = Button(BACK_IMG, 20, 20, 0.1)
         
@@ -288,36 +312,48 @@ class Connect_Four_GUI_APP:
         pygame.init()
         screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("Connect-4")
-        ICON_PATH = get_asset_path('Assets/Connect-Four.png')
+        ICON_PATH = get_asset_path('Assets', 'Connect-Four.png')
         ICON_IMG = pygame.image.load(ICON_PATH).convert_alpha()
         pygame.display.set_icon(ICON_IMG)
 
         # Creating Main Menu Background Image
-        BACKGROUND_PATH = get_asset_path('Assets/Connect-Four_MainMenu.png')
+        BACKGROUND_PATH = get_asset_path('Assets', 'Connect-Four_MainMenu.png')
         BACKGROUND_IMG = pygame.image.load(BACKGROUND_PATH).convert_alpha()
         Main_Menu_Image = Image(BACKGROUND_IMG, -25, -25, 0.7)
         
         # Creating the Game Mode Sub Menu Background
-        MODES_PATH = get_asset_path('Assets/Connect-Four_GameModes.png')
+        MODES_PATH = get_asset_path('Assets', 'Connect-Four_GameModes.png')
         MODES_IMG = pygame.image.load(MODES_PATH).convert_alpha()
         Modes_Image = Image(MODES_IMG, -25, -25, 0.7)
 
         # Creating Buttons
-        BACK_PATH = get_asset_path('Assets/Back.png')
+        BACK_PATH = get_asset_path('Assets', 'Back.png')
         BACK_IMG = pygame.image.load(BACK_PATH).convert_alpha()
         Back_Btn = Button(BACK_IMG, 20, 20, 0.1)
         
-        START_PATH = get_asset_path('Assets/Start.png')
+        START_PATH = get_asset_path('Assets', 'Start.png')
         START_IMG = pygame.image.load(START_PATH).convert_alpha()
         Start_Btn = Button(START_IMG, 260, 100, 0.3)
         
-        RANDOM_PATH = get_asset_path('Assets/Random.png')
+        RANDOM_PATH = get_asset_path('Assets', 'Random.png')
         RANDOM_IMG = pygame.image.load(RANDOM_PATH).convert_alpha()
         Random_Btn = Button(RANDOM_IMG, 40, 170, 0.2)
         
-        DT_PATH = get_asset_path('Assets/DecisionTree.png')
+        A_STAR_PATH = get_asset_path('Assets', 'A_Star_Search.png')
+        A_STAR_IMG = pygame.image.load(A_STAR_PATH).convert_alpha()
+        A_Star_Btn = Button(A_STAR_IMG, 30, 350, 0.18)
+        
+        MINIMAX_PATH = get_asset_path('Assets', 'MiniMax.png')
+        MINIMAX_IMG = pygame.image.load(MINIMAX_PATH).convert_alpha()
+        MiniMax_Btn = Button(MINIMAX_IMG, 535, 170, 0.14)
+        
+        MCTS_PATH = get_asset_path('Assets', 'MCTS.png')
+        MCTS_IMG = pygame.image.load(MCTS_PATH).convert_alpha()
+        MCTS_Btn = Button(MCTS_IMG, 535, 350, 0.2)
+
+        DT_PATH = get_asset_path('Assets', 'DecisionTree.png')
         DT_IMG = pygame.image.load(DT_PATH).convert_alpha()
-        DT_Btn = Button(DT_IMG, 535, 170, 0.18)
+        DT_Btn = Button(DT_IMG, 290, 500, 0.18)
         
         # Create a Flag to keep track of current state of the Application / GUI
         run = True
@@ -339,7 +375,19 @@ class Connect_Four_GUI_APP:
                 if (Random_Btn.Action(screen)):
                     self.menu = "Random"
 
-                self.write(font='Arial', text=" ID3 ", size=25, color=LIGHT_BLUE, bg_color=WHITE, bold=True, pos=(560, 280), screen=screen)
+                self.write(font='Arial', text=" A* Search ", size=25, color=LIGHT_BLUE, bg_color=WHITE, bold=True, pos=(33, 480), screen=screen)
+                if (A_Star_Btn.Action(screen)):
+                    self.menu = "A_Star"
+
+                self.write(font='Arial', text=" MiniMax ", size=25, color=LIGHT_BLUE, bg_color=WHITE, bold=True, pos=(545, 300), screen=screen)
+                if (MiniMax_Btn.Action(screen)):
+                    self.menu = "MiniMax"
+
+                self.write(font='Arial', text=" MCTS ", size=25, color=LIGHT_BLUE, bg_color=WHITE, bold=True, pos=(558, 485), screen=screen)
+                if (MCTS_Btn.Action(screen)):
+                    self.menu = "MCTS"
+
+                self.write(font='Arial', text=" ID3 ", size=25, color=LIGHT_BLUE, bg_color=WHITE, bold=True, pos=(315, 600), screen=screen)
                 if (DT_Btn.Action(screen)):
                     self.menu = "ID3"
                             
@@ -349,6 +397,24 @@ class Connect_Four_GUI_APP:
                 else:
                     run = False
             
+            if (self.menu == "A_Star"):
+                if (self.run_game(screen=screen, player1=self.player, player2=self.A_Star, heuristic_1=None, heuristic_2=heuristic_suggested)):
+                    self.menu = "Modes"
+                else:
+                    run = False
+            
+            if (self.menu == "MiniMax"):
+                if (self.run_game(screen=screen, player1=self.player, player2=self.minimax, heuristic_1=None, heuristic_2=heuristic_suggested)):
+                    self.menu = "Modes"
+                else:
+                    run = False
+            
+            if (self.menu == "MCTS"):
+                if (self.run_game(screen=screen, player1=self.player, player2=self.mcts, heuristic_1=None, heuristic_2=heuristic_suggested)):
+                    self.menu = "Modes"
+                else:
+                    run = False
+
             # ID3 Algorithm [According to the Database where the dataset's from the algorithm must be the first to play]
             if (self.menu == "ID3"):
                 if (self.run_game(screen=screen, player1=self.id3, player2=self.player, heuristic_1=None, heuristic_2=None)):
