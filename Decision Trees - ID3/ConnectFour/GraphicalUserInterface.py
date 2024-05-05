@@ -65,7 +65,7 @@ class Button:
         return Action # Returning if the button was activated
     
 class Connect_Four_GUI_APP:
-    def __init__(self):
+    def __init__(self, ConnectFour_DT):
         # Initializing the current_node with a initial state
         self.current_node = TreeNode(state=Connect_Four_State())
 
@@ -74,6 +74,9 @@ class Connect_Four_GUI_APP:
 
         # Declaring a variable to keep track of the current menu
         self.menu = "Main_Menu"
+
+        # Storing a Trained Decision tree on the Connect Four Dataset
+        self.dt = ConnectFour_DT
 
     """ PLAYER ACTIONS & ALGORITHMS"""
     def player(self):
@@ -113,6 +116,22 @@ class Connect_Four_GUI_APP:
         # Creating a new Node by making a move into the "ncol" column
         new_node = self.current_node.generate_new_node(ncol)
     
+        return new_node
+
+    def id3(self):
+        best_col = -1
+        best_eval = -1
+
+        for (n_col, new_state) in self.current_node.state.generate_new_states():
+            sample = new_state.convert_board_into_sample()
+            y_pred = self.dt.predict(sample)
+            if (y_pred > best_eval):
+                best_col = n_col
+                best_eval = y_pred
+
+        # Creating a new Node by making a move into the "ncol" column
+        new_node = self.current_node.generate_new_node(best_col)
+
         return new_node
 
     """ GUI METHODS """
@@ -290,8 +309,15 @@ class Connect_Four_GUI_APP:
 
                 self.write(font='Arial', text=" MCTS ", size=25, color=LIGHT_BLUE, bg_color=WHITE, bold=True, pos=(558, 485), screen=screen)
             
-            if (self.menu == "Random"):
+            if (self.menu == "Random2"):
                 if (self.run_game(screen=screen, player1=self.player, player2=self.random, heuristic_1=None, heuristic_2=None)):
+                    self.menu = "Modes"
+                else:
+                    run = False
+            
+            # ID3 Algorithm
+            if (self.menu == "Random"):
+                if (self.run_game(screen=screen, player1=self.player, player2=self.id3, heuristic_1=None, heuristic_2=None)):
                     self.menu = "Modes"
                 else:
                     run = False
