@@ -32,7 +32,7 @@ class Node:
             self.class_proba = [0 for _ in range(len(target_values))]
     
 class DecisionTree:
-    def __init__(self, min_samples_split=1, max_depth=10, n_features=None):
+    def __init__(self, min_samples_split=5, max_depth=10, n_features=None):
         # Amount of Samples needed to perform a split
         self.min_samples_split = min_samples_split
 
