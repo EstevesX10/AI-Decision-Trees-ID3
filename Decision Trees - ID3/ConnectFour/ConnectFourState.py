@@ -80,7 +80,7 @@ class Connect_Four_State:
 
         # Iterates through all possible actions and creates a new state for each one
         for ncol in self.actions:
-            new_states.append(self.move(ncol))
+            new_states.append((ncol, self.move(ncol)))
 
         # Returns all generated states
         return new_states
@@ -159,6 +159,40 @@ class Connect_Four_State:
         # Checks for a 4-piece combination made by PLayer 2 (after he made his move)
         elif(self.current_player == 2 and self.count_lines(4, 2, nrow, ncol)):
             self.winner = 2
+
+    def convert_sample_into_board(self, sample):
+        # Create a converter
+        converter = {'b':0, 'x':1, 'o':2}
+        vectorized_conversion = np.vectorize(converter.get)
+
+        # Reshape the 1D Array into a 6x7 board size (Used in the Connect FOur Game)
+        board =  np.array(sample).reshape(7, 6)
+
+        # Rotate the data due to how it was stored
+        corrected_board = np.rot90(board, k=1)
+
+        # Convert the Values with the converter (in order to be used with the code developed in the Assignment #1)
+        corrected_board = vectorized_conversion(corrected_board)
+
+        # Return the final board configuration
+        return corrected_board
+
+    def convert_board_into_sample(self):
+        # Create an Inverse Converter
+        reverse_converter = {0:'b', 1:'x', 2:'o'}
+        reverse_vectorized_conversion = np.vectorize(reverse_converter.get)
+
+        # Rotate the data to the format it was originally in
+        sample = np.rot90(self.board, k=3)
+
+        # Convert back the values
+        corrected_sample = reverse_vectorized_conversion(sample)
+
+        # Convert the 2D Array into a 1D Array (which is a sample)
+        corrected_sample = corrected_sample.flatten()
+
+        # return the final sample (which can be used with the Decision Tree trained with the connect four dataset)
+        return [corrected_sample]
 
     def read_state(self, file_path):
         # Reads a game state from a text file into a new game state
