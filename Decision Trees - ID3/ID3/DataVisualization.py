@@ -90,7 +90,7 @@ def Plot_Model_Stats(FitModel, Points, dataset, X_Test, Y_Test, Title="Model Per
         colors = ['#0059b3', '#990000', '#009926']
         for i in range(n_classes):
             axs[1].plot(fpr[i], tpr[i], color=colors[i], lw=1.2, linestyle='--',
-                        label=f"AUC of class {dataset.target_encoder.inverse_transform([labels[i]])[0]} = {roc_auc[i]:0.2f})")
+                        label=f"AUC of class {dataset.target_encoder.inverse_transform([labels[i]])[0]} = {roc_auc[i]:0.2f}")
 
         axs[1].plot([0, 1], [0, 1], 'darkblue', linestyle='--', lw=1.4, label=f"Chance Level (AUC = 0.5)")
         axs[1].set_xlabel('False Positive Rate')
