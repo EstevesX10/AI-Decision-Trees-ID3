@@ -10,7 +10,7 @@ from time import (time)
 # --------- #
 '''
 
-def A_Star_Search(initial_node:TreeNode, heuristic:function):
+def A_Star_Search(initial_node:TreeNode, heuristic:function) -> TreeNode:
 
     # Setting a method in the TreeNode Class - Compares 2 Nodes taking into consideration their parent state's heuristic as well as the respective path's cost
     setattr(TreeNode, "__lt__", lambda self, other: ((heuristic(self.parent.state) - len(self.parent.state.move_history) + 1)) < (heuristic(other.parent.state) - len(other.parent.state.move_history) + 1))
@@ -60,26 +60,7 @@ def A_Star_Search(initial_node:TreeNode, heuristic:function):
 # ------- #
 '''
 
-def execute_minimax_move(evaluate_func:function, depth:int):
-    def execute_minimax_move_aux(current_node):
-        # Initializing the best move and evaluation parameters
-        best_move = None
-        best_eval = float('-inf')
-        
-        # Looping through all possible moves and evaluating each new state [using the minmax algorithm]
-        # If they are better than the current best then they replace it
-        for ncol in current_node.state.actions:
-            new_state = current_node.state.move(ncol)
-            new_state_eval = MiniMax_Move(new_state, depth - 1, float('-inf'), float('+inf'), False, current_node.state.current_player, evaluate_func)
-            if new_state_eval > best_eval:
-                best_move = new_state
-                best_eval = new_state_eval
-        new_node = TreeNode(state=best_move, parent=current_node)
-        return new_node
-        
-    return execute_minimax_move_aux
-    
-def MiniMax_Move(state:Connect_Four_State, depth:int, alpha, beta, maximizing:bool, player:int, evaluate_func:function):
+def MiniMax_Move(state:Connect_Four_State, depth:int, alpha, beta, maximizing:bool, player:int, evaluate_func:function) -> float:
     """ MinMax with Alpha-Beta Pruning - EXTRA """
     
     # Reached the root [depth = 0] or found a Final State
@@ -110,7 +91,26 @@ def MiniMax_Move(state:Connect_Four_State, depth:int, alpha, beta, maximizing:bo
                 break
         return min_eval
 
-def MiniMax(node:TreeNode, heuristic:function, depth_search=5):
+def execute_minimax_move(evaluate_func:function, depth:int) -> TreeNode:
+    def execute_minimax_move_aux(current_node):
+        # Initializing the best move and evaluation parameters
+        best_move = None
+        best_eval = float('-inf')
+        
+        # Looping through all possible moves and evaluating each new state [using the minmax algorithm]
+        # If they are better than the current best then they replace it
+        for ncol in current_node.state.actions:
+            new_state = current_node.state.move(ncol)
+            new_state_eval = MiniMax_Move(new_state, depth - 1, float('-inf'), float('+inf'), False, current_node.state.current_player, evaluate_func)
+            if new_state_eval > best_eval:
+                best_move = new_state
+                best_eval = new_state_eval
+        new_node = TreeNode(state=best_move, parent=current_node)
+        return new_node
+        
+    return execute_minimax_move_aux
+
+def MiniMax(node:TreeNode, heuristic:function, depth_search=5) -> TreeNode:
     # Executing a MiniMax move with a depth search given
     return execute_minimax_move(heuristic, depth_search)(node)
 
@@ -120,7 +120,7 @@ def MiniMax(node:TreeNode, heuristic:function, depth_search=5):
 # ----------------------- #
 '''
 
-def uct(node:TreeNode): 
+def uct(node:TreeNode) -> float: 
     # Unvisited Nodes
     if (node.visits == 0):
         return float('+inf')
@@ -128,11 +128,11 @@ def uct(node:TreeNode):
     # Upper Confidence Bound Applied to Trees to evaluate each branch
     return (node.wins / (node.visits + 1)) + (sqrt(2* log(node.parent.visits) / (node.visits + 1)))
 
-def best_uct(node:TreeNode):
+def best_uct(node:TreeNode) -> float:
     # Returns the node's child with the highest uct value
     return max(node.children, key=lambda n: uct(n))
     
-def Expansion(node:TreeNode, heuristic:function): # Initially the node is the root
+def Expansion(node:TreeNode, heuristic:function) -> TreeNode: # Initially the node is the root
     
     # Looking for a non fully expanded node
     while node.fully_expanded():
@@ -148,11 +148,11 @@ def Expansion(node:TreeNode, heuristic:function): # Initially the node is the ro
 
     return child
 
-def rollout_policy(node:TreeNode):
+def rollout_policy(node:TreeNode) -> TreeNode:
     # Applying a Rollout Policy -> in this case: Random Moves
     return node.pick_random_child()
 
-def Rollout(node:TreeNode): # Also called Simulation
+def Rollout(node:TreeNode) -> int: # Also called Simulation
     # Saving a link to the initial node
     initial_node = node
 
@@ -166,7 +166,7 @@ def Rollout(node:TreeNode): # Also called Simulation
     # Returns the Winner
     return node.state.winner
 
-def update_stats(node:TreeNode, winner:int):
+def update_stats(node:TreeNode, winner:int) -> None:
     # Updating the Node's visits and the amount of Win's reached
     node.visits += 1
 
@@ -178,7 +178,7 @@ def update_stats(node:TreeNode, winner:int):
     if winner == node.state.previous_player():
         node.wins += 1
     
-def Backpropagation(node:TreeNode, winner:int):
+def Backpropagation(node:TreeNode, winner:int) -> None:
     # Updating the Node upon the Discovered Results
     update_stats(node, winner)
     
@@ -189,7 +189,7 @@ def Backpropagation(node:TreeNode, winner:int):
     # Updating the Parent Node
     Backpropagation(node.parent, winner)
 
-def pick_best_child(node:TreeNode):
+def pick_best_child(node:TreeNode) -> TreeNode:
     # Selecting the best child [The one that was visited the most]
     best_node = max(node.children, key=lambda n: n.visits)
 
@@ -200,7 +200,7 @@ def pick_best_child(node:TreeNode):
     # Returning best node according to the heuristic
     return best_node
 
-def resources_left(start_time:time):
+def resources_left(start_time:time) -> bool:
     # Creating a Function that determines when to stop the MCTS Algorithm
     TIME_TO_TRAIN = 5.0
     return (time() - start_time) < TIME_TO_TRAIN
