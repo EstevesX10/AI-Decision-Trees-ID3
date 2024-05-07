@@ -6,8 +6,9 @@ import statsmodels.api as sm
 import seaborn as sns
 from sklearn.preprocessing import (label_binarize)
 from sklearn.metrics import (confusion_matrix, roc_curve, roc_auc_score, auc)
+from ..ID3.ID3 import (DecisionTree, Dataset)
 
-def Display_dfs_side_by_side(dfs:list, captions:list):
+def Display_dfs_side_by_side(dfs:list, captions:list) -> None:
     """Display tables side by side to save vertical space
     Input:
         dfs: list of pandas.DataFrame
@@ -20,7 +21,7 @@ def Display_dfs_side_by_side(dfs:list, captions:list):
         output += "\xa0\xa0\xa0"
     display(HTML(output))
 
-def Plot_Model_Stats(FitModel, Points, dataset, X_Test, Y_Test, Title="Model Performance Evaluation"):
+def Plot_Model_Stats(FitModel:DecisionTree, Points:list[tuple], dataset:Dataset, X_Test:np.ndarray, Y_Test:np.ndarray, Title="Model Performance Evaluation") -> None:
 
     '''
     Plots the Confusion Matrix as Well as the Learning Curve
