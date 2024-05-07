@@ -17,7 +17,7 @@ class Connect_Four_State:
         # Initializing a variable to track the current player
         self.current_player = 1
         
-        # Variable to store the Winner (-1 - Game still running || 0 - Tie || 1 - PLayer 1 || 2 - Player 2 / AI)
+        # Variable to store the Winner (-1 - Game still running || 0 - Tie || 1 - Player 1 || 2 - Player 2 / AI)
         self.winner = -1
         
         # Setting a varible to store the board's move_history

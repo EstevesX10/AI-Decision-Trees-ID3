@@ -9,7 +9,7 @@ from time import (time)
 # --------- #
 '''
 
-def A_Star_Search(initial_node, heuristic):
+def A_Star_Search(initial_node:TreeNode, heuristic):
 
     # Setting a method in the TreeNode Class - Compares 2 Nodes taking into consideration their parent state's heuristic as well as the respective path's cost
     setattr(TreeNode, "__lt__", lambda self, other: ((heuristic(self.parent.state) - len(self.parent.state.move_history) + 1)) < (heuristic(other.parent.state) - len(other.parent.state.move_history) + 1))
@@ -45,7 +45,7 @@ def A_Star_Search(initial_node, heuristic):
             return current_node
 
         # Generating new_states and adding them to the queue (wrapped with a TreeNode) if they were not visited
-        for new_state in current_node.state.generate_new_states():
+        for _, new_state in current_node.state.generate_new_states():
             if (new_state not in visited_states):
                 child = TreeNode(state=new_state, parent=current_node)
                 heapq.heappush(queue, child)
