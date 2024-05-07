@@ -237,10 +237,10 @@ class Connect_Four_Terminal_APP:
                 option = self.player_vs_algorithms()
                 
                 if (option == 1): # Random Choice Game
-                    self.run_game(player1=self.player, player2=self.random, heuristic_1=None, heuristic_2=None, show_output=True)
+                    self.run_game(player1=self.random, player2=self.player, heuristic_1=None, heuristic_2=None, show_output=True)
                 
                 elif (option == 2): # A* Search
-                    self.run_game(player1=self.mcts, player2=self.A_Star, heuristic_1=self.id3_heuristic_V2, heuristic_2=None, show_output=True)
+                    self.run_game(player1=self.A_Star, player2=self.player, heuristic_1=self.id3_heuristic_V2, heuristic_2=None, show_output=True)
                 
                 elif (option == 3): # MiniMax
                     self.run_game(player1=self.minimax, player2=self.player, heuristic_1=self.id3_heuristic_V2, heuristic_2=None, show_output=True)
