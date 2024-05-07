@@ -1,4 +1,5 @@
 import heapq
+from typing import (Callable)
 from .ConnectFourState import (Connect_Four_State)
 from .TreeNode import (TreeNode)
 from math import (sqrt, log)
@@ -10,7 +11,7 @@ from time import (time)
 # --------- #
 '''
 
-def A_Star_Search(initial_node:TreeNode, heuristic:function) -> TreeNode:
+def A_Star_Search(initial_node:TreeNode, heuristic:Callable[[TreeNode], int]) -> TreeNode:
 
     # Setting a method in the TreeNode Class - Compares 2 Nodes taking into consideration their parent state's heuristic as well as the respective path's cost
     setattr(TreeNode, "__lt__", lambda self, other: ((heuristic(self.parent.state) - len(self.parent.state.move_history) + 1)) < (heuristic(other.parent.state) - len(other.parent.state.move_history) + 1))
@@ -60,7 +61,7 @@ def A_Star_Search(initial_node:TreeNode, heuristic:function) -> TreeNode:
 # ------- #
 '''
 
-def MiniMax_Move(state:Connect_Four_State, depth:int, alpha, beta, maximizing:bool, player:int, evaluate_func:function) -> float:
+def MiniMax_Move(state:Connect_Four_State, depth:int, alpha, beta, maximizing:bool, player:int, evaluate_func:Callable[[TreeNode], int]) -> float:
     """ MinMax with Alpha-Beta Pruning - EXTRA """
     
     # Reached the root [depth = 0] or found a Final State
@@ -91,7 +92,7 @@ def MiniMax_Move(state:Connect_Four_State, depth:int, alpha, beta, maximizing:bo
                 break
         return min_eval
 
-def execute_minimax_move(evaluate_func:function, depth:int) -> TreeNode:
+def execute_minimax_move(evaluate_func:Callable[[TreeNode], int], depth:int) -> TreeNode:
     def execute_minimax_move_aux(current_node):
         # Initializing the best move and evaluation parameters
         best_move = None
@@ -110,7 +111,7 @@ def execute_minimax_move(evaluate_func:function, depth:int) -> TreeNode:
         
     return execute_minimax_move_aux
 
-def MiniMax(node:TreeNode, heuristic:function, depth_search=5) -> TreeNode:
+def MiniMax(node:TreeNode, heuristic:Callable[[TreeNode], int], depth_search=5) -> TreeNode:
     # Executing a MiniMax move with a depth search given
     return execute_minimax_move(heuristic, depth_search)(node)
 
@@ -132,7 +133,7 @@ def best_uct(node:TreeNode) -> float:
     # Returns the node's child with the highest uct value
     return max(node.children, key=lambda n: uct(n))
     
-def Expansion(node:TreeNode, heuristic:function) -> TreeNode: # Initially the node is the root
+def Expansion(node:TreeNode, heuristic:Callable[[TreeNode], int]) -> TreeNode: # Initially the node is the root
     
     # Looking for a non fully expanded node
     while node.fully_expanded():
@@ -205,7 +206,7 @@ def resources_left(start_time:time) -> bool:
     TIME_TO_TRAIN = 5.0
     return (time() - start_time) < TIME_TO_TRAIN
 
-def MCTS(root:TreeNode, heuristic:function) -> TreeNode:
+def MCTS(root:TreeNode, heuristic:Callable[[TreeNode], int]) -> TreeNode:
     # Saving the Initial Instant
     start = time()
     # Executing the Algorithm while there are resources left

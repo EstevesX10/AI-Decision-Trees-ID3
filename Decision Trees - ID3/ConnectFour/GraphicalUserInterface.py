@@ -1,6 +1,7 @@
 import numpy as np
 import random as rd
 import pygame
+from typing import (Callable)
 from . import (get_asset_path)
 from .Constants import (NROWS, NCOLS,
                        SQSIZE, X_OFFSET, Y_OFFSET, BORDER_THICKNESS, WIDTH, HEIGHT,
@@ -122,7 +123,7 @@ class Connect_Four_GUI_APP:
     
         return new_node
 
-    def A_Star_action(self, heuristic:function) -> TreeNode:
+    def A_Star_action(self, heuristic:Callable[[TreeNode], int]) -> TreeNode:
         # Getting the Final Node after using the A* Search
         final_node = A_Star_Search(self.current_node, heuristic)
         
@@ -136,11 +137,11 @@ class Connect_Four_GUI_APP:
         # Returns the next node
         return new_node
 
-    def minimax(self, heuristic:function, depth_search=5) -> TreeNode:
+    def minimax(self, heuristic:Callable[[TreeNode], int], depth_search=5) -> TreeNode:
         # Executing a MiniMax move with both heuristics and depth search given
         return MiniMax(self.current_node, heuristic, depth_search)
 
-    def mcts(self, heuristic:function) -> TreeNode:
+    def mcts(self, heuristic:Callable[[TreeNode], int]) -> TreeNode:
         # Executing the Monte Carlo Tree Search Algorithm
         return MCTS(self.current_node, heuristic)
 

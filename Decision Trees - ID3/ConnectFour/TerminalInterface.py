@@ -1,4 +1,5 @@
 from __future__ import annotations
+from typing import (Callable)
 import random as rd
 from .ConnectFourState import (Connect_Four_State)
 from .TreeNode import (TreeNode)
@@ -43,7 +44,7 @@ class Connect_Four_Terminal_APP:
 
         return new_node
 
-    def A_Star_action(self, heuristic:function) -> TreeNode:
+    def A_Star_action(self, heuristic:Callable[[TreeNode], int]) -> TreeNode:
         # Getting the Final Node after using the A* Search
         final_node = A_Star_Search(self.current_node, heuristic)
         
@@ -152,7 +153,7 @@ class Connect_Four_Terminal_APP:
             return True
         return False
 
-    def menus_base_function(self, print_function:function, lower_value:int, higher_value:int, multiple_values=False, back_item=5) -> int:
+    def menus_base_function(self, print_function:Callable[[TreeNode], int], lower_value:int, higher_value:int, multiple_values=False, back_item=5) -> int:
         clear_output()
         print_function()
         if (multiple_values):
