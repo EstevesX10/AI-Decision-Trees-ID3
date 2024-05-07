@@ -40,7 +40,7 @@ class TreeNode:
         # Returns the New Child
         return new_child
             
-    def generate_new_node(self, ncol):
+    def generate_new_node(self, ncol:int):
         # Creates a new state after the move
         new_state = self.state.move(ncol)
         # Wraps it with a TreeNode
@@ -52,7 +52,7 @@ class TreeNode:
         # Returns the generated Node
         return new_node
 
-    def read_state_node(self, file_path):
+    def read_state_node(self, file_path:str):
         # Reading a State
         new_state = Connect_Four_State().read_state(file_path)
         # Creating a new node based on the read state
