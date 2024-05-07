@@ -399,7 +399,7 @@ class Connect_Four_GUI_APP:
                     self.menu = "ID3"
                             
             if (self.menu == "Random"):
-                if (self.run_game(screen=screen, player1=self.player, player2=self.random, heuristic_1=None, heuristic_2=None)):
+                if (self.run_game(screen=screen, player1=self.random, player2=self.player, heuristic_1=None, heuristic_2=None)):
                     self.menu = "Modes"
                 else:
                     run = False
@@ -424,10 +424,7 @@ class Connect_Four_GUI_APP:
 
             # ID3 Algorithm [According to the Database where the dataset's from the algorithm must be the first to play]
             if (self.menu == "ID3"):
-                if (self.run_game(screen=screen, player1=self.id3, player2=self.player, heuristic_1=None, heuristic_2=None)):
-                    self.menu = "Modes"
-                else:
-                    run = False
+                self.menu = "Modes"
             
             # Main Event Loop
             for event in pygame.event.get():
