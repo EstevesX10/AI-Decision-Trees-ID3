@@ -405,19 +405,19 @@ class Connect_Four_GUI_APP:
                     run = False
             
             if (self.menu == "A_Star"):
-                if (self.run_game(screen=screen, player1=self.player, player2=self.A_Star, heuristic_1=None, heuristic_2=self.id3_heuristic_V1)):
+                if (self.run_game(screen=screen, player1=self.A_Star, player2=self.player, heuristic_1=self.id3_heuristic_V2, heuristic_2=None)):
                     self.menu = "Modes"
                 else:
                     run = False
             
             if (self.menu == "MiniMax"):
-                if (self.run_game(screen=screen, player1=self.player, player2=self.minimax, heuristic_1=None, heuristic_2=self.id3_heuristic_V1)):
+                if (self.run_game(screen=screen, player1=self.minimax, player2=self.player, heuristic_1=self.id3_heuristic_V2, heuristic_2=None)):
                     self.menu = "Modes"
                 else:
                     run = False
             
             if (self.menu == "MCTS"):
-                if (self.run_game(screen=screen, player1=self.player, player2=self.mcts, heuristic_1=None, heuristic_2=self.id3_heuristic_V1)):
+                if (self.run_game(screen=screen, player1=self.mcts, player2=self.player, heuristic_1=self.id3_heuristic_V2, heuristic_2=None)):
                     self.menu = "Modes"
                 else:
                     run = False
@@ -428,8 +428,6 @@ class Connect_Four_GUI_APP:
                     self.menu = "Modes"
                 else:
                     run = False
-
-            '''MISSING IMPLEMENTATION OF A GAME MODE WITH THE ID3 ALGORITHM'''
             
             # Main Event Loop
             for event in pygame.event.get():
