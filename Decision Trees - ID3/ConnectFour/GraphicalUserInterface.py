@@ -10,6 +10,7 @@ from .ConnectFourState import (Connect_Four_State)
 from .TreeNode import (TreeNode)
 from .Heuristics import (heuristic_suggested)
 from .Algorithms import (A_Star_Search, MiniMax, MCTS)
+from ..ID3.ID3 import (DecisionTree)
 
 # NOTE:
 # -> Both Image and Button Classes are almost the same. They only differ upon the button's functionality since a Image is only used to display a sprite while the button 
@@ -68,7 +69,7 @@ class Button:
         return Action # Returning if the button was activated
     
 class Connect_Four_GUI_APP:
-    def __init__(self, ConnectFour_DT):
+    def __init__(self, ConnectFour_DT:DecisionTree) -> None:
         # Initializing the current_node with a initial state
         self.current_node = TreeNode(state=Connect_Four_State())
 
@@ -82,7 +83,7 @@ class Connect_Four_GUI_APP:
         self.dt = ConnectFour_DT
 
     """ PLAYER ACTIONS & ALGORITHMS"""
-    def player(self):
+    def player(self) -> TreeNode:
         # In case we don't do any move the node stays the same
         new_node = self.current_node
         
@@ -111,7 +112,7 @@ class Connect_Four_GUI_APP:
     
         return new_node
 
-    def random(self):
+    def random(self) -> TreeNode:
         # Randomizing a col to play at & printing which one it was
         ncol_idx = rd.randrange(0, len(self.current_node.state.actions))
         ncol = self.current_node.state.actions[ncol_idx]
@@ -121,29 +122,29 @@ class Connect_Four_GUI_APP:
     
         return new_node
 
-    def A_Star_action(self, heuristic):
+    def A_Star_action(self, heuristic:function) -> TreeNode:
         # Getting the Final Node after using the A* Search
         final_node = A_Star_Search(self.current_node, heuristic)
         
         # return next node
         return final_node
     
-    def A_Star(self, heuristic=heuristic_suggested):
+    def A_Star(self, heuristic=heuristic_suggested) -> TreeNode:
         # Generate the Next_Node
         new_node = self.A_Star_action(heuristic)
     
         # Returns the next node
         return new_node
 
-    def minimax(self, heuristic, depth_search=5):
+    def minimax(self, heuristic:function, depth_search=5) -> TreeNode:
         # Executing a MiniMax move with both heuristics and depth search given
         return MiniMax(self.current_node, heuristic, depth_search)
 
-    def mcts(self, heuristic):
+    def mcts(self, heuristic:function) -> TreeNode:
         # Executing the Monte Carlo Tree Search Algorithm
         return MCTS(self.current_node, heuristic)
 
-    def id3_heuristic_V1(self, state):
+    def id3_heuristic_V1(self, state:Connect_Four_State) -> int:
         # Converts the board into a sample to be fed to the algorithm
         sample = state.convert_board_into_sample()
 
@@ -155,7 +156,7 @@ class Connect_Four_GUI_APP:
 
         return convert[y_pred]
     
-    def id3_heuristic_V2(self, state):
+    def id3_heuristic_V2(self, state:Connect_Four_State) -> int:
         # Converts the board into a sample to be fed to the algorithm
         sample = state.convert_board_into_sample()
 
@@ -167,7 +168,7 @@ class Connect_Four_GUI_APP:
 
         return total_pred
 
-    def id3(self):
+    def id3(self) -> TreeNode:
         best_col = -1
         best_proba_win = best_proba_draw = -1
         best_proba_lose = 1000
@@ -197,13 +198,13 @@ class Connect_Four_GUI_APP:
         return new_node
 
     """ GUI METHODS """
-    def write(self, font, text, size, color, bg_color, bold, pos, screen):
+    def write(self, font:str, text:str, size:tuple, color:str, bg_color:str, bold:bool, pos:tuple, screen:pygame.Surface) -> None:
         # Writes Text into the Screen
         letra = pygame.font.SysFont(font, size, bold)
         frase = letra.render(text, 1, color, bg_color)
         screen.blit(frase, pos)
 
-    def write_winner(self, screen, winner_name):
+    def write_winner(self, screen:pygame.Surface, winner_name:str) -> None:
         if (self.current_node.state.winner != 0):
             winner_text = (" " + winner_name + " " + str(self.current_node.state.winner) + " Wins! ")
         else:
@@ -213,7 +214,7 @@ class Connect_Four_GUI_APP:
         (x, y) = ((WIDTH  - winner_text_length)//2, (Y_OFFSET - font_size - BORDER_THICKNESS) // 2)
         self.write(font='Arial', text=winner_text, size=font_size, color=LIGHT_BLUE, bg_color=WHITE, bold=True, pos=(0.65*x, 25), screen=screen)
     
-    def draw_board(self, screen):
+    def draw_board(self, screen:pygame.Surface) -> None:
         # Draws Board's Shadow
         board_rect_shadow = pygame.Rect((X_OFFSET - BORDER_THICKNESS, Y_OFFSET - BORDER_THICKNESS),
                                         (SQSIZE*NCOLS + 2*BORDER_THICKNESS, SQSIZE*NROWS + 2*BORDER_THICKNESS))
@@ -241,14 +242,14 @@ class Connect_Four_GUI_APP:
                 pygame.draw.circle(screen, Circle_Color, (X_OFFSET + SQSIZE//2 + (col*SQSIZE),
                                                           Y_OFFSET + SQSIZE//2 + (row*SQSIZE)), int(0.9*CIRCLE_RADIUS))
     
-    def draw(self, screen):
+    def draw(self, screen:pygame.Surface) -> None:
         # Filling the Background with Blue
         screen.fill(LIGHT_BLUE)
 
         # Drawing the Current Board Elements
         self.draw_board(screen)
     
-    def run_game(self, screen, player1, player2, heuristic_1=None, heuristic_2=None):
+    def run_game(self, screen:pygame.Surface, player1:int, player2:int, heuristic_1=None, heuristic_2=None) -> int:
         # Reseting the game
         self.current_node = TreeNode(state=Connect_Four_State())
 
@@ -314,7 +315,7 @@ class Connect_Four_GUI_APP:
         # Went back to the Game Menu's
         return 1
 
-    def run(self):
+    def run(self) -> None:
         # Initializing Window / Screen
         pygame.init()
         screen = pygame.display.set_mode((WIDTH, HEIGHT))

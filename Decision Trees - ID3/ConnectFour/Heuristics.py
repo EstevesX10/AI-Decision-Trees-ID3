@@ -1,8 +1,10 @@
 # This File contains the Suggested Heuristic from the Assignment #1
 
 from .Constants import (NROWS, NCOLS)
+from .ConnectFourState import (Connect_Four_State)
+from .TreeNode import (TreeNode)
 
-def check_line_configuration(player, values):
+def check_line_configuration(player:int, values:list[int]) -> tuple[int]:
     # Counts the amount of pieces of each type
     
     # List with the amount of pieces for each type
@@ -20,7 +22,7 @@ def check_line_configuration(player, values):
     else: # Previous Player => Player 2
         return (pieces[2], pieces[1], pieces[0])
 
-def calculate_line_score(player_pieces, enemy_pieces, empty_spaces, state, extra=False):
+def calculate_line_score(player_pieces:int, enemy_pieces:int, empty_spaces:int, state:Connect_Four_State, extra=False) -> int:
     # -> Calculates the score to return based on the line configuration
     # Defining a Score Decoder for the amount of Empty Spaces
     SCORE_DECODER = [512,  # Idx - 0 Empty Spaces - There are 4 player's pieces
@@ -46,7 +48,7 @@ def calculate_line_score(player_pieces, enemy_pieces, empty_spaces, state, extra
     # Returning final score evaluation for the 4-piece sequence
     return score
 
-def calculate_score(state):
+def calculate_score(state:Connect_Four_State) -> int:
     # -> Calculates current State Evaluation [Based on the Assignment's Suggestion]
     # Initializes the number of lines found
     total_score = 0
@@ -86,6 +88,6 @@ def calculate_score(state):
             
     return total_score
 
-def heuristic_suggested(state):
+def heuristic_suggested(state:TreeNode) -> int:
     # Suggested Heuristic in the Assignment I Paper
     return calculate_score(state)

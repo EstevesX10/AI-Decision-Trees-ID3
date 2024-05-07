@@ -1,9 +1,10 @@
+from __future__ import annotations
 import numpy as np
 from copy import (deepcopy)
 from .Constants import (NROWS, NCOLS)
 
 class Connect_Four_State:
-    def __init__(self):
+    def __init__(self) -> None:
         # Matrix to Store the Board's Values
         self.board = np.zeros(shape=(NROWS, NCOLS), dtype=np.int8)
 
@@ -23,27 +24,27 @@ class Connect_Four_State:
         # Setting a varible to store the board's move_history
         self.move_history = (self.board,)
     
-    def next_player(self):
+    def next_player(self) -> int:
         # Returns the next turn's player
         return 3 - self.current_player
 
-    def previous_player(self):
+    def previous_player(self) -> int:
         # Returns the previous's player
         return self.next_player()
     
-    def is_over(self):
+    def is_over(self) -> bool:
         # If the Winner corresponds to -1 then the game is not finished otherwise it is
         return self.winner != -1
         
-    def reset(self):
+    def reset(self) -> None:
         # Calls back the Constructor
         return self.__init__()
     
-    def inside_board(self, x, y):
+    def inside_board(self, x:int, y:int) -> bool:
         # Checks if a position (x,y) exists inside the board's matrix
         return (x >= 0 and x < NROWS) and (y >= 0 and y < NCOLS)
     
-    def move(self, ncol):
+    def move(self, ncol:int) -> Connect_Four_State:
         # The move is not valid
         if (ncol not in self.actions):
             return self
@@ -74,7 +75,7 @@ class Connect_Four_State:
         # Returns the New State
         return new_state
 
-    def generate_new_states(self):
+    def generate_new_states(self) -> list[(int, Connect_Four_State)]:
         # List to contain all the new states
         new_states = []
 
@@ -85,7 +86,7 @@ class Connect_Four_State:
         # Returns all generated states
         return new_states
     
-    def count_lines(self, n, player, nrow, ncol):
+    def count_lines(self, n:int, player:int, nrow:int, ncol:int) -> bool:
         # -> Searches the Board looking for a 4-piece Combination
 
         # Horizontal Line
@@ -146,7 +147,7 @@ class Connect_Four_State:
             
         return False
     
-    def update_winner(self, nrow, ncol):
+    def update_winner(self, nrow:int, ncol:int) -> None:
         # -> Updates the Current State's Winner
         # Checks if the Board is full already
         if (self.actions.size == 0):
@@ -160,7 +161,7 @@ class Connect_Four_State:
         elif(self.current_player == 2 and self.count_lines(4, 2, nrow, ncol)):
             self.winner = 2
 
-    def convert_sample_into_board(self, sample):
+    def convert_sample_into_board(self, sample:list[list[str]]) -> Connect_Four_State.board:
         # Create a converter
         converter = {'b':0, 'x':1, 'o':2}
         vectorized_conversion = np.vectorize(converter.get)
@@ -177,7 +178,7 @@ class Connect_Four_State:
         # Return the final board configuration
         return corrected_board
 
-    def convert_board_into_sample(self):
+    def convert_board_into_sample(self) -> list:
         # Create an Inverse Converter
         reverse_converter = {0:'b', 1:'x', 2:'o'}
         reverse_vectorized_conversion = np.vectorize(reverse_converter.get)
@@ -194,7 +195,7 @@ class Connect_Four_State:
         # return the final sample (which can be used with the Decision Tree trained with the connect four dataset)
         return [corrected_sample]
 
-    def read_state(self, file_path):
+    def read_state(self, file_path:str) -> Connect_Four_State:
         # Reads a game state from a text file into a new game state
         new_state = Connect_Four_State()
         
@@ -240,7 +241,7 @@ class Connect_Four_State:
     
     """ AUXILIAR METHODS """
 
-    def __str__(self):
+    def __str__(self) -> str:
         # -> Converts the board into the style used in the Assignment 1 Paper
         DECODER = {0:'-', 1:'X', 2:'O'}
         line = ["-" for i in range(2*NCOLS -1)]
@@ -262,10 +263,10 @@ class Connect_Four_State:
         new_board += formated_line
         return new_board
         
-    def __hash__(self):
+    def __hash__(self) -> hash:
         return hash(str(self.board))
 
-    def __eq__(self, other:object):
+    def __eq__(self, other:object) -> bool:
         if (not isinstance(other, Connect_Four_State)):
             raise Exception(f"Sorry, other object is not an instance of {self.__class__.__name__}")
         return hash(self) == hash(other)
