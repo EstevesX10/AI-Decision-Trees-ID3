@@ -1,14 +1,17 @@
 import random as rd
-from IPython.display import (clear_output)
 from .ConnectFourState import (Connect_Four_State)
 from .TreeNode import (TreeNode)
 from .Heuristics import (heuristic_suggested)
 from .Algorithms import (A_Star_Search, MiniMax, MCTS)
+from IPython.display import (clear_output)
 
 class Connect_Four_Terminal_APP:
-    def __init__(self):
+    def __init__(self, ConnectFour_DT):
         self.current_node = TreeNode(state=Connect_Four_State())
         self.menu = "Main_Menu"
+
+        # Storing a Trained Decision tree on the Connect Four Dataset
+        self.dt = ConnectFour_DT
 
     """ Player & Algorithms """
     def player(self, show=True):
@@ -194,7 +197,31 @@ class Connect_Four_Terminal_APP:
     def player_vs_algorithms(self):
         return self.menus_base_function(print_function=self.print_player_vs_algorithms, lower_value=0, higher_value=5)
     
-    def execute(self):
+    def id3_heuristic_V1(self, state):
+        # Converts the board into a sample to be fed to the algorithm
+        sample = state.convert_board_into_sample()
+
+        # Predicting the outcome of the board configuration
+        y_pred = self.dt.predict(sample)[0]
+
+        # We need a conversion since the Label Encoder labeled the target classes as {Draw:0, Lose:1, Win:2}
+        convert = {0:1, 1:0, 2:2}
+
+        return convert[y_pred]
+    
+    def id3_heuristic_V2(self, state):
+        # Converts the board into a sample to be fed to the algorithm
+        sample = state.convert_board_into_sample()
+
+        # Calculates the probability of each possible end game
+        [[prob_draw, prob_lose, prob_win]] = self.dt.predict_proba(sample)
+
+        # Add some coefficents to try to improve the results
+        total_pred = -1000*prob_lose + 5*prob_draw + 10*prob_win
+
+        return total_pred
+
+    def run(self):
         self.menu = "Main_Menu"
         
         while self.menu != "EXIT":
@@ -213,13 +240,13 @@ class Connect_Four_Terminal_APP:
                     self.run_game(player1=self.player, player2=self.random, heuristic_1=None, heuristic_2=None, show_output=True)
                 
                 elif (option == 2): # A* Search
-                    self.run_game(player1=self.player, player2=self.A_Star, heuristic_1=None, heuristic_2=heuristic_suggested, show_output=True)
+                    self.run_game(player1=self.mcts, player2=self.A_Star, heuristic_1=self.id3_heuristic_V2, heuristic_2=None, show_output=True)
                 
                 elif (option == 3): # MiniMax
-                    self.run_game(player1=self.player, player2=self.minimax, heuristic_1=None, heuristic_2=heuristic_suggested, show_output=True)
+                    self.run_game(player1=self.minimax, player2=self.player, heuristic_1=self.id3_heuristic_V2, heuristic_2=None, show_output=True)
                 
                 elif (option == 4): # Monte Carlo Tree Search
-                    self.run_game(player1=self.player, player2=self.mcts, heuristic_1=None, heuristic_2=heuristic_suggested, show_output=True)
+                    self.run_game(player1=self.mcts, player2=self.player, heuristic_1=self.id3_heuristic_V2, heuristic_2=None, show_output=True)
                 
                 elif (option == 5): # BACK
                     self.menu = "Main_Menu"
