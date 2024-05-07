@@ -2,7 +2,7 @@ import numpy as np
 from .ConnectFourState import (Connect_Four_State)
 
 class TreeNode:
-    def __init__(self, state, parent=None):
+    def __init__(self, state:Connect_Four_State, parent=None):
         # Stores a State of the Game
         self.state = state
         # Keeps a reference to his Parent Node
