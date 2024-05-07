@@ -143,46 +143,53 @@ class Connect_Four_GUI_APP:
         # Executing the Monte Carlo Tree Search Algorithm
         return MCTS(self.current_node, heuristic)
 
+    def id3_heuristic_V1(self, state):
+        # Converts the board into a sample to be fed to the algorithm
+        sample = state.convert_board_into_sample()
+
+        # Predicting the outcome of the board configuration
+        y_pred = self.dt.predict(sample)[0]
+
+        # We need a conversion since the Label Encoder labeled the target classes as {Draw:0, Lose:1, Win:2}
+        convert = {0:1, 1:0, 2:2}
+
+        return convert[y_pred]
+    
+    def id3_heuristic_V2(self, state):
+        # Converts the board into a sample to be fed to the algorithm
+        sample = state.convert_board_into_sample()
+
+        # Calculates the probability of each possible end game
+        [[prob_draw, prob_lose, prob_win]] = self.dt.predict_proba(sample)
+
+        # Add some coefficents to try to improve the results
+        total_pred = -1000*prob_lose + 5*prob_draw + 10*prob_win
+
+        return total_pred
+
     def id3(self):
         best_col = -1
-        best_eval = -10000000000000000
         best_proba_win = best_proba_draw = -1
         best_proba_lose = 1000
 
         for (n_col, new_state) in self.current_node.state.generate_new_states():
             sample = new_state.convert_board_into_sample()
-            y_pred = self.dt.predict(sample)
             [[prob_draw, prob_lose, prob_win]] = self.dt.predict_proba(sample)
 
-            total_pred = -1000*prob_lose + 5*prob_draw + 10*prob_win
-
-            # The array needs mapping since the encoder converted the target values as : 0 - Draw, 1 - Loss, 2 - Win
-            # pred_mapping = {0:1, 1:0, 2:2}
-            # vectorized_mapping = np.vectorize(pred_mapping.get)
-            # y_pred = vectorized_mapping(y_pred)
-
-            # if (y_pred > best_eval):
-            #     best_col = n_col
-            #     best_eval = y_pred
-
-            # if (prob_win > best_proba_win):
-            #     best_proba_win = prob_win
-            #     best_proba_draw = prob_draw
-            #     best_proba_lose = prob_lose
-            #     best_col = n_col
-            # elif (prob_win == best_proba_win):
-            #     if (prob_draw > best_proba_draw):
-            #         best_proba_draw = prob_draw
-            #         best_proba_lose = prob_lose
-            #         best_col = n_col
-            #     elif (prob_draw == best_proba_draw):
-            #         if (prob_lose < best_proba_lose):
-            #             best_proba_lose = prob_lose
-            #             best_col = n_col
-
-            if (total_pred > best_eval):
-                best_eval = total_pred
+            if (prob_win > best_proba_win):
+                best_proba_win = prob_win
+                best_proba_draw = prob_draw
+                best_proba_lose = prob_lose
                 best_col = n_col
+            elif (prob_win == best_proba_win):
+                if (prob_draw > best_proba_draw):
+                    best_proba_draw = prob_draw
+                    best_proba_lose = prob_lose
+                    best_col = n_col
+                elif (prob_draw == best_proba_draw):
+                    if (prob_lose < best_proba_lose):
+                        best_proba_lose = prob_lose
+                        best_col = n_col
 
         # Creating a new Node by making a move into the "ncol" column
         new_node = self.current_node.generate_new_node(best_col)
@@ -398,19 +405,19 @@ class Connect_Four_GUI_APP:
                     run = False
             
             if (self.menu == "A_Star"):
-                if (self.run_game(screen=screen, player1=self.player, player2=self.A_Star, heuristic_1=None, heuristic_2=heuristic_suggested)):
+                if (self.run_game(screen=screen, player1=self.player, player2=self.A_Star, heuristic_1=None, heuristic_2=self.id3_heuristic_V1)):
                     self.menu = "Modes"
                 else:
                     run = False
             
             if (self.menu == "MiniMax"):
-                if (self.run_game(screen=screen, player1=self.player, player2=self.minimax, heuristic_1=None, heuristic_2=heuristic_suggested)):
+                if (self.run_game(screen=screen, player1=self.player, player2=self.minimax, heuristic_1=None, heuristic_2=self.id3_heuristic_V1)):
                     self.menu = "Modes"
                 else:
                     run = False
             
             if (self.menu == "MCTS"):
-                if (self.run_game(screen=screen, player1=self.player, player2=self.mcts, heuristic_1=None, heuristic_2=heuristic_suggested)):
+                if (self.run_game(screen=screen, player1=self.player, player2=self.mcts, heuristic_1=None, heuristic_2=self.id3_heuristic_V1)):
                     self.menu = "Modes"
                 else:
                     run = False
