@@ -1,4 +1,5 @@
 import heapq
+from .ConnectFourState import (Connect_Four_State)
 from .TreeNode import (TreeNode)
 from math import (sqrt, log)
 from time import (time)
@@ -9,7 +10,7 @@ from time import (time)
 # --------- #
 '''
 
-def A_Star_Search(initial_node:TreeNode, heuristic):
+def A_Star_Search(initial_node:TreeNode, heuristic:function):
 
     # Setting a method in the TreeNode Class - Compares 2 Nodes taking into consideration their parent state's heuristic as well as the respective path's cost
     setattr(TreeNode, "__lt__", lambda self, other: ((heuristic(self.parent.state) - len(self.parent.state.move_history) + 1)) < (heuristic(other.parent.state) - len(other.parent.state.move_history) + 1))
@@ -59,7 +60,7 @@ def A_Star_Search(initial_node:TreeNode, heuristic):
 # ------- #
 '''
 
-def execute_minimax_move(evaluate_func, depth):
+def execute_minimax_move(evaluate_func:function, depth:int):
     def execute_minimax_move_aux(current_node):
         # Initializing the best move and evaluation parameters
         best_move = None
@@ -78,7 +79,7 @@ def execute_minimax_move(evaluate_func, depth):
         
     return execute_minimax_move_aux
     
-def MiniMax_Move(state, depth, alpha, beta, maximizing, player, evaluate_func):
+def MiniMax_Move(state:Connect_Four_State, depth:int, alpha, beta, maximizing:bool, player:int, evaluate_func:function):
     """ MinMax with Alpha-Beta Pruning - EXTRA """
     
     # Reached the root [depth = 0] or found a Final State
@@ -109,7 +110,7 @@ def MiniMax_Move(state, depth, alpha, beta, maximizing, player, evaluate_func):
                 break
         return min_eval
 
-def MiniMax(node, heuristic, depth_search=5):
+def MiniMax(node:TreeNode, heuristic:function, depth_search=5):
     # Executing a MiniMax move with a depth search given
     return execute_minimax_move(heuristic, depth_search)(node)
 
@@ -131,7 +132,7 @@ def best_uct(node:TreeNode):
     # Returns the node's child with the highest uct value
     return max(node.children, key=lambda n: uct(n))
     
-def Expansion(node:TreeNode, heuristic): # Initially the node is the root
+def Expansion(node:TreeNode, heuristic:function): # Initially the node is the root
     
     # Looking for a non fully expanded node
     while node.fully_expanded():
@@ -199,12 +200,12 @@ def pick_best_child(node:TreeNode):
     # Returning best node according to the heuristic
     return best_node
 
-def resources_left(start_time):
+def resources_left(start_time:time):
     # Creating a Function that determines when to stop the MCTS Algorithm
     TIME_TO_TRAIN = 5.0
     return (time() - start_time) < TIME_TO_TRAIN
 
-def MCTS(root:TreeNode, heuristic):
+def MCTS(root:TreeNode, heuristic:function) -> TreeNode:
     # Saving the Initial Instant
     start = time()
     # Executing the Algorithm while there are resources left
