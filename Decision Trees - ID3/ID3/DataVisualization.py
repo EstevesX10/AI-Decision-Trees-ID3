@@ -6,7 +6,8 @@ import statsmodels.api as sm
 import seaborn as sns
 from sklearn.preprocessing import (label_binarize)
 from sklearn.metrics import (confusion_matrix, roc_curve, roc_auc_score, auc)
-from ..ID3.ID3 import (DecisionTree, Dataset)
+from .ID3 import (DecisionTree)
+from .DataPreprocessing import (Dataset)
 
 def Display_dfs_side_by_side(dfs:list, captions:list) -> None:
     """Display tables side by side to save vertical space

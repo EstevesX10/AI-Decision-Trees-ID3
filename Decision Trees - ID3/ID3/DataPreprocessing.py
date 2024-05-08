@@ -3,7 +3,6 @@ import pandas as pd
 import json
 from sklearn.model_selection import (train_test_split)
 from sklearn.preprocessing import (LabelEncoder)
-from .ID3 import (DecisionTree)
 
 class Dataset:
     def __init__(self, file_path:str) -> None:
@@ -82,7 +81,7 @@ class Dataset:
 
 # Other Functions used to manage data
 
-def calc_learning_curve_points(Model:DecisionTree, X:np.ndarray, y:np.ndarray, n_itr=20, min_train_samples=1, n_points=10) -> list[tuple]:
+def calc_learning_curve_points(Model, X:np.ndarray, y:np.ndarray, n_itr=20, min_train_samples=1, n_points=10) -> list[tuple]:
     # Calculates a list of points to plot the learning curve
     points = []
     n_samples = len(X)
