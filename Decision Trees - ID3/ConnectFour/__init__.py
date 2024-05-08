@@ -16,6 +16,12 @@ def get_asset_path(folder, asset_filename):
     base_dir = get_base_dir()
     return os.path.join(base_dir, folder, asset_filename)
 
+# Defining which submodules to import when using from <package> import *
+__all__ = ["heuristic_suggested", "A_Star_Search", "MiniMax", "MCTS", "Connect_Four_State", "TreeNode", "Connect_Four_Terminal_APP", "Connect_Four_GUI_APP"]
+
+from .Heuristics import (heuristic_suggested)
+from .Algorithms import (A_Star_Search, MiniMax, MCTS)
 from .ConnectFourState import (Connect_Four_State)
+from .TreeNode import (TreeNode)
 from .TerminalInterface import (Connect_Four_Terminal_APP)
 from .GraphicalUserInterface import (Connect_Four_GUI_APP)

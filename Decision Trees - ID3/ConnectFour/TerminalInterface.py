@@ -5,7 +5,7 @@ from .ConnectFourState import (Connect_Four_State)
 from .TreeNode import (TreeNode)
 from .Heuristics import (heuristic_suggested)
 from .Algorithms import (A_Star_Search, MiniMax, MCTS)
-from ..ID3.ID3 import (DecisionTree)
+from ID3.ID3 import (DecisionTree)
 from IPython.display import (clear_output)
 
 class Connect_Four_Terminal_APP:
