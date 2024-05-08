@@ -11,7 +11,7 @@ from .ConnectFourState import (Connect_Four_State)
 from .TreeNode import (TreeNode)
 from .Heuristics import (heuristic_suggested)
 from .Algorithms import (A_Star_Search, MiniMax, MCTS)
-from ID3.ID3 import (DecisionTree)
+from ID3Study.ID3 import (DecisionTree)
 
 # NOTE:
 # -> Both Image and Button Classes are almost the same. They only differ upon the button's functionality since a Image is only used to display a sprite while the button 
