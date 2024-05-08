@@ -9,7 +9,26 @@
 
 ## Project Overview
 
-> ADD PROJECT OVERVIEW
+Nowadays, **Decision Trees** represent one of the most popular **Supervised Machine Learning Algorithms**. They are commonly used in **classification problems**, but yet versatile enough to address **regression tasks** as well. The core concept behind a decision tree resides in **consecutive partitions of data** using feature-based decision-making processes that can be visually represented with a tree structure. This structure consists of nodes and leaves where each internal node denotes a test on an attribute, each branch represents an outcome of the test, and each leaf node holds a target class label.
+
+These can vary from:
+
+- **ID3 Algortihm**.
+- **CART Algorithm**.
+- **(C4.5) Algorithm**.
+
+And even used within **ensemble models**:
+
+- **Random Forest** (Use of Multiple Decision Trees to make a decision).
+- **AdaBoost** (Use of Stumps as Weak Learners to make a decision).
+- **XGBoost** (One of the best decision trees algorithms used in real world applications).
+
+Consequently, due to their usefullness, this **Assignment #2** focuses on implementing one of these Algorithms: 
+
+<div align="center">
+
+> The ID3 Algorithm.
+</div> 
 
 ## Project Development (Dependencies & Execution)
 As a request from our professors this project was developed using a `Notebook`. Therefore if you're looking forward to test it out yourself, keep in mind to either use a **[Anaconda Distribution](https://www.anaconda.com/)** or a 3rd party software that helps you inspect and execute it.
