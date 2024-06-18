@@ -46,7 +46,7 @@ And even used within **ensemble models**:
 - **AdaBoost** (Use of Stumps as Weak Learners to make a decision).
 - **XGBoost** (One of the best decision trees algorithms used in real world applications).
 
-Consequently, due to their usefullness, this **Assignment #2** focuses on implementing one of these Algorithms: 
+Consequently, due to their usefullness, this [**Assignment #2**](https://github.com/EstevesX10/AI-Decision-Trees-ID3/blob/main/Decision%20Trees%20-%20ID3/Decision_Trees_ID3.ipynb) focuses on implementing one of these Algorithms: 
 
 <div align="center">
 
