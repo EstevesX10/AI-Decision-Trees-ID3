@@ -19,10 +19,10 @@
     <a href="https://github.com/EstevesX10/AI-Decision-Trees-ID3/blob/main/LICENSE">
         <img src="https://img.shields.io/github/license/EstevesX10/EIACD-Klotski?style=flat&logo=gitbook&logoColor=orange&label=License&color=orange">    
     </a>
-    <a>
+    <a href="">
         <img src="https://img.shields.io/github/repo-size/EstevesX10/EIACD-Klotski?style=flat&logo=googlecloudstorage&logoColor=orange&logoSize=auto&label=Repository%20Size&color=orange">
     </a>
-    <a>
+    <a href="">
         <img src="https://img.shields.io/github/stars/EstevesX10/EIACD-Klotski?style=flat&logo=adafruit&logoColor=orange&logoSize=auto&label=Stars&color=orange">    
     </a>
     <a href="https://github.com/EstevesX10/AI-Decision-Trees-ID3/blob/main/DEPENDENCIES.md">
