@@ -17,16 +17,16 @@
 
 <div align="center">
     <a href="https://github.com/EstevesX10/AI-Decision-Trees-ID3/blob/main/LICENSE">
-        <img src="https://img.shields.io/github/license/EstevesX10/AI-Decision-Trees-ID3?style=flat&logo=gitbook&logoColor=87CEFA&label=License&color=87CEFA">    
+        <img src="https://img.shields.io/github/license/EstevesX10/AI-Decision-Trees-ID3?style=flat&logo=gitbook&logoColor=87CEFA&label=License&color=87CEFA">
     </a>
     <a href="">
         <img src="https://img.shields.io/github/repo-size/EstevesX10/AI-Decision-Trees-ID3?style=flat&logo=googlecloudstorage&logoColor=87CEFA&logoSize=auto&label=Repository%20Size&color=87CEFA">
     </a>
     <a href="">
-        <img src="https://img.shields.io/github/stars/EstevesX10/AI-Decision-Trees-ID3?style=flat&logo=adafruit&logoColor=87CEFA&logoSize=auto&label=Stars&color=87CEFA">    
+        <img src="https://img.shields.io/github/stars/EstevesX10/AI-Decision-Trees-ID3?style=flat&logo=adafruit&logoColor=87CEFA&logoSize=auto&label=Stars&color=87CEFA">
     </a>
     <a href="https://github.com/EstevesX10/AI-Decision-Trees-ID3/blob/main/DEPENDENCIES.md">
-        <img src="https://img.shields.io/badge/Dependencies-DEPENDENCIES.md-white?style=flat&logo=anaconda&logoColor=87CEFA&logoSize=auto&color=87CEFA">    
+        <img src="https://img.shields.io/badge/Dependencies-DEPENDENCIES.md-white?style=flat&logo=anaconda&logoColor=87CEFA&logoSize=auto&color=87CEFA"> 
     </a>
 </div>
 
