@@ -16,7 +16,7 @@
 <br/>
 
 <div align="center">
-    <a>
+    <a href="https://github.com/EstevesX10/AI-Decision-Trees-ID3/blob/main/LICENSE">
         <img src="https://img.shields.io/github/license/EstevesX10/EIACD-Klotski?style=flat&logo=gitbook&logoColor=orange&label=License&color=orange">    
     </a>
     <a>
@@ -25,7 +25,7 @@
     <a>
         <img src="https://img.shields.io/github/stars/EstevesX10/EIACD-Klotski?style=flat&logo=adafruit&logoColor=orange&logoSize=auto&label=Stars&color=orange">    
     </a>
-    <a>
+    <a href="https://github.com/EstevesX10/AI-Decision-Trees-ID3/blob/main/DEPENDENCIES.md">
         <img src="https://img.shields.io/badge/Dependencies-DEPENDENCIES.md-orange?style=flat&logo=anaconda&logoColor=orange&logoSize=auto&color=orange">    
     </a>
 </div>
