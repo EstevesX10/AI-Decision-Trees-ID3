@@ -32,7 +32,7 @@
 
 ## Project Overview
 
-Nowadays, **Decision Trees** represent one of the most popular **Supervised Machine Learning Algorithms**. They are commonly used in **classification problems**, but yet versatile enough to address **regression tasks** as well. The core concept behind a decision tree resides in **consecutive partitions of data** using feature-based decision-making processes that can be visually represented with a tree structure. This structure consists of nodes and leaves where each internal node denotes a test on an attribute, each branch represents an outcome of the test, and each leaf node holds a target class label.
+Nowadays, **Decision Trees** represent one of the most popular **Supervised Machine Learning Algorithms**. They are commonly used in **classification problems**, but yet versatile enough to address **regression tasks** as well. The core concept behind a decision tree resides in **consecutive partitions of data** using feature-based decision-making processes that can be visually represented with a tree structure. This structure consists of nodes and leaves where each internal node denotes a test on an attribute, each branch represents an outcome of the test, and each leaf node holds a **target class label**.
 
 These can vary from:
 
