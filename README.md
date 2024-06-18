@@ -52,11 +52,18 @@ Consequently, due to their usefullness, this **Assignment #2** focuses on implem
 
 > The ID3 Algorithm.
 
+</div>
+
+## Authorship
+
+- **Authors** &#8594; [Gonçalo Esteves](https://github.com/EstevesX10) and [Nuno Gomes](https://github.com/NightF0x26)
+- **Course** &#8594; Artificial Intelligence [CC2006]
+- **University** &#8594; Faculty of Sciences, University of Porto
+ 
 <div align="right">
 <sub>
 
 <!-- <sup></sup> -->
-
 `README.md by Gonçalo Esteves`
 </sub>
 </div>
