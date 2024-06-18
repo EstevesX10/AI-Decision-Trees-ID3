@@ -28,13 +28,12 @@ Consequently, due to their usefullness, this **Assignment #2** focuses on implem
 <div align="center">
 
 > The ID3 Algorithm.
-</div> 
 
 <div align="right">
-<sup>
 <sub>
 
-README.md by [Gonçalo Esteves](https://github.com/EstevesX10)
+<!-- <sup></sup> -->
+
+`README.md by Gonçalo Esteves`
 </sub>
-</sup>
 </div>
