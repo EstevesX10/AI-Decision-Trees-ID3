@@ -9,7 +9,7 @@
 
 <div align="center">
     <a>
-        <img src="https://img.shields.io/badge/Made%20with-Jupyter-87CEFA?style=for-the-badge&logo=Jupyter">
+        <img src="https://img.shields.io/badge/Made%20with-Jupyter-87CEFA?style=for-the-badge&logo=Jupyter&logoColor=87CEFA">
     </a>
 </div>
 
