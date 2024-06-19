@@ -54,6 +54,11 @@ Consequently, due to their usefullness, this [**Assignment #2**](https://github.
 
 </div>
 
+## Project Development (Dependencies & Execution)
+As a request from our professors this project was developed using a `Notebook`. Therefore if you're looking forward to test it out yourself, keep in mind to either use a **[Anaconda Distribution](https://www.anaconda.com/)** or a 3rd party software that helps you inspect and execute it. 
+
+Therefore, for more informations regarding the **Virtual Environment** used in Anaconda, consider checking the [DEPENDENCIES.md](https://github.com/EstevesX10/AI-Decision-Trees-ID3/blob/main/DEPENDENCIES.md) file.
+
 ## Authorship
 
 - **Authors** &#8594; [Gonçalo Esteves](https://github.com/EstevesX10) and [Nuno Gomes](https://github.com/NightF0x26)
